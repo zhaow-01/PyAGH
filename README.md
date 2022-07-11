@@ -1,6 +1,6 @@
 # PyAGH
 
-<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png" alt="627d03933bcab2d00923e54db25d9d8" style="zoom: 20%;" />
+<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png"  style="zoom: 20%;" />
 
 ## Introduction
 
@@ -176,20 +176,20 @@ coef_inbreeding
 cluster_example = PyAGH.cluster(A)
 ```
 
-![aaa](C:\Users\zhaow\Documents\aaa.png)
+<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/cluster_example.png"  />
 
 ```python
 group=['1','1','1','1','1','1','1','2','2','2','2','2','2','2','2','2','2']
 pca_example = PyAGH.pca(A,group=group)
 ```
 
-![pca](C:\Users\zhaow\Documents\pca.png)
+![pca](https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/pca_example.png)
 
 ```python
 heatmap_example = PyAGH.heat(A)
 ```
 
-<img src="C:\Users\zhaow\Documents\heat.png" alt="heat" style="zoom:150%;" />
+<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/heat_example.png" alt="heat" style="zoom:150%;" />
 
 ```python
 import graphviz
@@ -200,7 +200,7 @@ graphviz.Source(p)
 
 
 
-![output](C:\Users\zhaow\Documents\output.svg)
+![output](https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/ped_example.png)
 
 ## License
 
