@@ -194,7 +194,7 @@ heatmap_example = PyAGH.heat(A)
 plt.savefig('heatmap_example.png', facecolor='w',dpi=300)
 ```
 
-<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/heat_example.png" alt="heat"  />
+<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/heat_example.png" alt="heat" width="400" />
 
 ```python
 import graphviz
