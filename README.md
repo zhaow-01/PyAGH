@@ -1,6 +1,6 @@
 # PyAGH
 
-<img src="C:\Users\zhaow\Desktop\627d03933bcab2d00923e54db25d9d8.png" alt="627d03933bcab2d00923e54db25d9d8" style="zoom: 33%;" />
+![](https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png)
 
 ## Introduction
 
@@ -168,7 +168,7 @@ coef_inbreeding
 |  151 |   16 |   17 | 0.333486 |
 |  152 |   17 |   17 | 1.000000 |
 
-<p align="right">153 rows × 3 columns</p>
+153 rows × 3 columns
 
 #### Visualization
 
