@@ -1,6 +1,6 @@
 # PyAGH
 
-<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png"  style="zoom: 20%;" />
+<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png"  style="zoom: 10%;" />
 
 ## Introduction
 
@@ -24,10 +24,10 @@ The target audience of `PyAGH` includes:
 
 Currently, `PyAGH` mainly provides the following methods:
 
-- **Pedigree sorting:  **Provides methods to quickly obtain the correct pedigree in chronological order of birth clean multiple types of data error.
+- **Pedigree sorting:** Provides methods to quickly obtain the correct pedigree in chronological order of birth clean multiple types of data error.
 - **Pedigree selection:** Provides methods to select pedigree based on specific individuals and generations.
 - **Calculation of coefficients:** Provides methods to easily obtain the inbreeding and relationship coefficients of specific individuals.
-- **Kinship matrix: ** Provides different methods to calculating Amatix, Gmatrix and Hmatrix.
+- **Kinship matrix:** Provides different methods to calculating Amatix, Gmatrix and Hmatrix.
 - **Visualization:** Provides methods to display results.
 
 ****
