@@ -51,8 +51,8 @@ setup(
     ext_modules=[Pybind11Extension(name='PyAGH.FCOEFF',  # 模块名称
                            sources=['scrc/pybind11_fcoeff.cpp'],    # 源码
                            define_macros = [('VERSION_INFO', __VERSION__)],
-                           language='c++',
-                            extra_compile_args = ['-std=c++11'],
+                           language='c++11',
+                           
                            )],
     package_data={
         '':['data/*'],
