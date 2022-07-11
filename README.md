@@ -1,6 +1,6 @@
 # PyAGH
 
-<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png" alt="627d03933bcab2d00923e54db25d9d8" style="zoom: 33%;" />
+<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png" alt="627d03933bcab2d00923e54db25d9d8" style="zoom: 20%;" />
 
 ## Introduction
 
