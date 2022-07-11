@@ -179,7 +179,9 @@ cluster_example = PyAGH.cluster(A)
 plt.savefig('cluster_example.png', facecolor='w',dpi=300)
 ```
 
+<div align=center>
 <img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/cluster_example.png" width="600" />
+</div>
 
 ```python
 group=['1','1','1','1','1','1','1','2','2','2','2','2','2','2','2','2','2']
@@ -193,9 +195,9 @@ plt.savefig('pca_example.png', facecolor='w',dpi=300)
 heatmap_example = PyAGH.heat(A)
 plt.savefig('heatmap_example.png', facecolor='w',dpi=300)
 ```
-
+<div align=center>
 <img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/heat_example.png" alt="heat" width="600" />
-
+</div>
 ```python
 import graphviz
 ped_selected = PyAGH.selectPed(data=ped,id=['17'],generation=3)
@@ -203,7 +205,8 @@ p = PyAGH.gragh(ped_selected)
 graphviz.Source(p)
 ```
 
-
+<br/>
+<br/>
 
 ![output](https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/ped_example.png)
 
