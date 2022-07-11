@@ -3,7 +3,7 @@
 <div align=center>
 <img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png" width="600" />
 </div>
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/ni1o1/transbigdata/d7d6fa33ff16440ba1698b10dd3cf3f76ff00abd?urlpath=lab%2Ftree%2Fexample%2FExample%201-Taxi%20GPS%20data%20processing.ipynb) 
+
 
 ## Introduction
 
