@@ -4,6 +4,7 @@
 <img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png" width="600" />
 </div>
 [![PyPI version](https://badge.fury.io/py/PyAGH.svg)](https://badge.fury.io/py/PyAGH) 
+
 ## Introduction
 
 `PyAGH` is a Python package developed for calculating kinship matrix using pedigree or genotype data as well as  processing, analysis and visualization for data. `PyAGH` provides fast and concise methods for calculating Amatrix (based on pedigree), Gmatrix (based on genotype) and Hmatrix (based on pedigree and genotype) used in breeding. `PyAGH`supports a variety of mainstream algorithms, you can easily choose different algorithms for calculation. With the obtained relationship matrix, you can use `PyAGH` for fast visualization, including PCA analysis, Cluster analysis and drawing Heatmaps.
