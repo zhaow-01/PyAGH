@@ -176,6 +176,7 @@ coef_inbreeding
 
 ```python
 cluster_example = PyAGH.cluster(A)
+plt.savefig('cluster_example.png', facecolor='w',dpi=300)
 ```
 
 <img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/cluster_example.png"  />
@@ -183,15 +184,17 @@ cluster_example = PyAGH.cluster(A)
 ```python
 group=['1','1','1','1','1','1','1','2','2','2','2','2','2','2','2','2','2']
 pca_example = PyAGH.pca(A,group=group)
+plt.savefig('pca_example.png', facecolor='w',dpi=300)
 ```
 
 ![pca](https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/pca_example.png)
 
 ```python
 heatmap_example = PyAGH.heat(A)
+plt.savefig('heatmap_example.png', facecolor='w',dpi=300)
 ```
 
-<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/heat_example.png" alt="heat" style="zoom:150%;" />
+<img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/heat_example.png" alt="heat"  />
 
 ```python
 import graphviz
