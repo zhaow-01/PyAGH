@@ -52,7 +52,7 @@ setup(
                            sources=['scrc/pybind11_fcoeff.cpp'],    # 源码
                            define_macros = [('VERSION_INFO', __VERSION__)],
                            language='c++',
-                           cxx_std=14,
+                           cxx_std=11,
     
                            )],
     package_data={
