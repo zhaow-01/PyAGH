@@ -6,6 +6,9 @@
 <p> 
   <a href="https://badge.fury.io/py/PyAGH"><img src="https://badge.fury.io/py/PyAGH.svg" alt="PyPI version" height="18"></a>
   <img alt="GitHub" src="https://img.shields.io/github/license/zhaow-01/PyAGH">
+  <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/zhaow-01/PyAGH">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/zhaow-01/PyAGH">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/zhaow-01/PyAGH?color=green">
 </p> 
 
 
