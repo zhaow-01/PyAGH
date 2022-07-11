@@ -3,7 +3,7 @@
 <div align=center>
 <img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png" width="600" />
 </div>
-[![PyPI version](https://badge.fury.io/py/PyAGH.svg)](https://badge.fury.io/py/PyAGH)] [![GitHub](https://img.shields.io/github/license/mashape/apistatus)] [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/zhaow-01/PyAGH)] [![GitHub top language](https://img.shields.io/github/languages/top/zhaow-01/PyAGH)]
+[![PyPI version](https://badge.fury.io/py/PyAGH.svg)](https://badge.fury.io/py/PyAGH) [![GitHub](https://img.shields.io/github/license/mashape/apistatus)] [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/zhaow-01/PyAGH)] [![GitHub top language](https://img.shields.io/github/languages/top/zhaow-01/PyAGH)]
 
 ## Introduction
 
