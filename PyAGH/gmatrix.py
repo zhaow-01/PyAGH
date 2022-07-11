@@ -3,35 +3,39 @@ import pandas as pd
 import polars as pl
 import gc
 
-## genoFile_list:两个群体合并在一起的geno文件，格式必须是traw,使用一个txt文件整合文件名
+## genoFile_list:两个群体合并在一起的geno文件，格式必须是traw,使用一个txt文件整合文件名  x修改支持直接输入一个文件名
 ## method=0 sum{[(xij - 2pi)*(xik - 2pi)] / [2pi(1-pi)]}/N as described in Yang et al. 2010 Nat Genet. 
 ## method=1 sum[(xij - 2pi)(xik - 2pi)] / sum[2pi(1-pi)].
 ## method=2 G_new if method ==2,分别提供两个群体的数量，n1: 1号群里个体数量 n2:2号群体数量
 ## method=3 G_chen
 
-def makeG(genoFile_list,method,n1=0,n2=0): 
+
+def makeG(File, method: int, File_list = False, n1 =0, n2=0): 
     method_list =[0,1,2,3]
     if not isinstance(method, int):
-        print("ERROR: Parameter method should be a int")
+        print("ERROR: Parameter method should be int type!")
         return
     if method not in method_list:
         print("ERROR: Parameter method should be in %s" %method_list)
         return
-    try:
-        genofile = pd.read_table(genoFile_list,header=None)  ##读取包含每条染色体文件名的文件，失败报错
-        for i in range(genofile.shape[0]):
-            if genofile.iloc[i,0].endswith('.traw'):  ##判断是不是traw格式,并不知道文件存不存在
-                pass
-            else:
-                print("ERROR: genotype file type should be .traw of PLINK")
-                return
-    except Exception as reason:
-        print(str(reason))
+    if File_list:   
+        try:
+            genofile = pd.read_table(File,header=None)  ##读取包含每条染色体文件名的文件，失败报错
+            for i in range(genofile.shape[0]):
+                if genofile.iloc[i,0].endswith('.traw'):  ##判断是不是traw格式,并不知道文件存不存在
+                    pass
+                else:
+                    print("ERROR: genotype file type should be .traw of PLINK")
+                    return
+        except Exception as reason:
+            print(str(reason))
+    else:
+        genofile = pd.DataFrame([File])
     try:
         temp = open(genofile.iloc[0,0],"r")  
-        line1 = temp.readline().split() 
+        line1 = temp.readline().split()
         ###提取出个体id，最后和G矩阵一起返回                  
-        geno_id = line1[6:]                    
+        geno_id =   pd.Series(line1[6:])                  
 
         N = len(line1)-6 ##个体数 ##只读第一行标题 N在方法2和3中有需要
         
@@ -113,7 +117,7 @@ def makeG(genoFile_list,method,n1=0,n2=0):
         #np.savetxt("G_new_wgs.txt",gmat,fmt="%.10f")
         return [gmat,geno_id]
     if method == 0:
-        M = 0 
+        M = 0
         for i in range(genofile.shape[0]):
             chr_file = genofile.iloc[i,0]
             try:

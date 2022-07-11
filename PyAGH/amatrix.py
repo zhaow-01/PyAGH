@@ -3,10 +3,13 @@ import ctypes
 import numpy as np
 from scipy import sparse
 from scipy.sparse.linalg import spsolve_triangular
-import os
+import PyAGH.FCOEFF
 def makeA(data_ord):
     if not isinstance(data_ord, pd.DataFrame): ###必须是data.frame
         print("Please provide data with dataframe type!")
+        return
+    if data_ord.shape[0] == 0:
+        print("data is null!")
         return
     if data_ord.shape[1] != 3:
         print("Data must have three columns, please verify")
@@ -21,12 +24,11 @@ def makeA(data_ord):
     if any(data_ord.isnull().any()):
         print("There is Nan in data, first use the 'sort_ped' function")
         return
+    data_ord = data_ord.astype(str)
     ###如果存在重复的行，使用sort——ped函数
     if any(data_ord.duplicated()):
         print("Duplicate in data, first use the 'sort_ped' function")
         return
-
-    data_ord = data_ord.astype(str)
 
     if any(data_ord.iloc[:,0].duplicated()): ##检查存在相同个体但父母却不相同的错误,即仅在个体列存在重复的情况
         print("some individuals appear more than once in the pedigree")
@@ -61,16 +63,12 @@ def makeA(data_ord):
     sire_c = (ctypes.c_int * N) (*sire)
     f_c = (ctypes.c_double * (N+1)) (*f)
     dii_c = (ctypes.c_double * N) (*dii)
-    dirname, _ = os.path.split(os.path.abspath(__file__))
-    cpp = ctypes.cdll.LoadLibrary(dirname + "/ct.so")
- 
-    cpp.fcoeff.restype = ctypes.c_ulong
-    cpp.fcoeff(ctypes.pointer(dam_c),
-    ctypes.pointer(sire_c),  
-    ctypes.pointer(f_c),       
-    ctypes.pointer(dii_c), 
-    ctypes.pointer(ctypes.c_int(N)),
-    ctypes.pointer(ctypes.c_int(1))
+    PyAGH.FCOEFF.fcoeff(dam_c,
+                    sire_c,  
+                    f_c,       
+                    dii_c, 
+                    ctypes.c_int(N),
+                    ctypes.c_int(1)
     )
     loc = pd.DataFrame({
             "x": pd.concat([nPed["id"],nPed["id"],pd.Series(range(N))]),
