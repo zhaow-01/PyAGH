@@ -3,7 +3,11 @@
 <div align=center>
 <img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/logo.png" width="600" />
 </div>
-[![PyPI version](https://badge.fury.io/py/PyAGH.svg)](https://badge.fury.io/py/PyAGH) 
+<p> 
+  <a href="https://badge.fury.io/py/PyAGH"><img src="https://badge.fury.io/py/PyAGH.svg" alt="PyPI version" height="18"></a>
+  <img alt="GitHub" src="https://img.shields.io/github/license/zhaow-01/PyAGH">
+</p> 
+
 
 ## Introduction
 
