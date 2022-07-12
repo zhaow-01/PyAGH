@@ -3,8 +3,8 @@ import os
 
 
 __VERSION__ = '0.2.13'
-#BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
-BASE_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
+#BASE_DIR = os.path.dirname(__file__)
 os.chdir(BASE_DIR)
 
 ext_modules = []
