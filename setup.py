@@ -1,11 +1,10 @@
-from xml.etree.ElementInclude import include
 from setuptools import setup,find_packages
-import os.path
+import os
 
 
-__VERSION__ = '0.2.10'
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
-#BASE_DIR = os.path.dirname(__file__)
+__VERSION__ = '0.2.11'
+#BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
+BASE_DIR = os.path.dirname(__file__)
 os.chdir(BASE_DIR)
 
 ext_modules = []
