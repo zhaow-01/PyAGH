@@ -3,7 +3,7 @@ import ctypes
 import numpy as np
 from scipy import sparse
 from scipy.sparse.linalg import spsolve_triangular
-import PyAGH.FCOEFF
+import FCOEFF
 def makeA(data_ord):
     if not isinstance(data_ord, pd.DataFrame): ###必须是data.frame
         print("Please provide data with dataframe type!")
@@ -63,7 +63,7 @@ def makeA(data_ord):
     sire_c = (ctypes.c_int * N) (*sire)
     f_c = (ctypes.c_double * (N+1)) (*f)
     dii_c = (ctypes.c_double * N) (*dii)
-    PyAGH.FCOEFF.fcoeff(dam_c,
+    FCOEFF.fcoeff(dam_c,
                     sire_c,  
                     f_c,       
                     dii_c, 

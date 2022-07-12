@@ -11,7 +11,7 @@ ext_modules = []
 try:
     from pybind11.setup_helpers import Pybind11Extension 
     import pybind11
-    ext_modules=[Pybind11Extension(name='PyAGH.FCOEFF',  # 模块名称
+    ext_modules=[Pybind11Extension(name='FCOEFF',  # 模块名称
                             sources=['scrc/pybind11_fcoeff.cpp'],    # 源码
                             define_macros = [('VERSION_INFO', __VERSION__)],
                             language='c++',
