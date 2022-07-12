@@ -2,7 +2,7 @@ from setuptools import setup,find_packages
 import os
 
 
-__VERSION__ = '0.2.12'
+__VERSION__ = '0.2.13'
 #BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
 BASE_DIR = os.path.dirname(__file__)
 os.chdir(BASE_DIR)
@@ -19,7 +19,6 @@ try:
                             include_dirs = [pybind11.get_include()],
                            )]
 
-
 except ImportError:
     pass
 
@@ -34,13 +33,13 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     python_requires='>=3.5',
-    setup_requires = ["pybind11"],
-    install_requires=["numpy",
+    setup_requires = ["pybind11 >= 2.9.2"],
+    install_requires=["numpy >= 1.21.0",
                       "pandas >=1.1.0",
-                      "sympy",
-                      "scipy",
-                      "polars",
-                      "pybind11",
+                      "sympy >= 1.10.1",
+                      "scipy >= 1.7.3",
+                      "polars >= 0.13.51",
+                      "pybind11>= 2.9.2",
                       "matplotlib",
                       ],
     include_package_data=True,
