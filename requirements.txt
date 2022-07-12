@@ -4,3 +4,4 @@ pybind11 == 2.9.2
 sympy == 1.10.1
 scipy == 1.7.3
 polars == 0.13.51
+matplotlib = 3.5.1

@@ -1,15 +1,28 @@
+from xml.etree.ElementInclude import include
 from setuptools import setup,find_packages
 import os.path
 
 
-__VERSION__ = '0.2.8'
+__VERSION__ = '0.2.10'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
 #BASE_DIR = os.path.dirname(__file__)
 os.chdir(BASE_DIR)
+
+ext_modules = []
 try:
-    from pybind11.setup_helpers import Pybind11Extension
+    from pybind11.setup_helpers import Pybind11Extension 
+    import pybind11
+    ext_modules=[Pybind11Extension(name='PyAGH.FCOEFF',  # 模块名称
+                            sources=['scrc/pybind11_fcoeff.cpp'],    # 源码
+                            define_macros = [('VERSION_INFO', __VERSION__)],
+                            language='c++',
+                            cxx_std=11,
+                            include_dir = [pybind11.get_include()],
+                           )]
+
+
 except ImportError:
-    from setuptools import Extension as Pybind11Extension
+    pass
 
 
 setup(
@@ -29,6 +42,7 @@ setup(
                       "scipy",
                       "polars",
                       "pybind11",
+                      "matplotlib",
                       ],
     include_package_data=True,
     license='MIT License',
@@ -48,13 +62,7 @@ setup(
           'Programming Language :: C++',
           'Topic :: Scientific/Engineering :: Bio-Informatics',
       ],
-    ext_modules=[Pybind11Extension(name='PyAGH.FCOEFF',  # 模块名称
-                           sources=['scrc/pybind11_fcoeff.cpp'],    # 源码
-                           define_macros = [('VERSION_INFO', __VERSION__)],
-                           language='c++',
-                           cxx_std=11,
-    
-                           )],
+    ext_modules=ext_modules,
     package_data={
         '':['data/*'],
                },
