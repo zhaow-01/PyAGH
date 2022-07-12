@@ -2,7 +2,7 @@ from setuptools import setup,find_packages
 import os
 
 
-__VERSION__ = '0.2.11'
+__VERSION__ = '0.2.12'
 #BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
 BASE_DIR = os.path.dirname(__file__)
 os.chdir(BASE_DIR)
@@ -16,7 +16,7 @@ try:
                             define_macros = [('VERSION_INFO', __VERSION__)],
                             language='c++',
                             cxx_std=11,
-                            include_dir = [pybind11.get_include()],
+                            include_dirs = [pybind11.get_include()],
                            )]
 
 
