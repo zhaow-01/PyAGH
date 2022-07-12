@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: PyAGH
+Version: 0.2.14
+Summary: A package for calculating kinship matrix
+Author: Zhao Wei
+Author-email: 852322127@qq.com
+License: MIT License
+Platform: all
+Classifier: Development Status :: 3 - Alpha
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: C++
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Python: >=3.5
+License-File: LICENSE
