@@ -1,7 +1,8 @@
 ###返回亲缘系数和近交系数
 import numpy as np
 import pandas as pd
-def coefKinship(A):
+
+def coefInbreeding(A):
     if not isinstance(A, list):
         print("ERROR: Parameter A should be a list!")
         return
@@ -28,7 +29,7 @@ def coefKinship(A):
 
 def getLowerTriangularIndices(n):
     return [list(x) for x in np.triu_indices(n)]
-def coefInbreeding(A):
+def coefKinship(A):
     if not isinstance(A, list):
         print("ERROR: Parameter A should be a list!")
         return

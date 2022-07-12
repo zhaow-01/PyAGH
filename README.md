@@ -141,8 +141,8 @@ H = PyAGH.makeH(G,A,w=0.05)
 #### Calculate coefficients
 
 ```python
-coef_kinship = PyAGH.coefKinship(A)
-coef_kinship
+coef_inbreeding = PyAGH.coefInbreeding(A)
+coef_inbreeding
 ```
 
 | index |  ID  |    F    |
@@ -160,10 +160,13 @@ coef_kinship
 |  15   |  16  | 0.0625  |
 |  16   |  17  | -0.0000 |
 
+
 ```python
-coef_inbreeding = PyAGH.coefInbreeding(A)
-coef_inbreeding
+coef_kinship = PyAGH.coefKinship(A)
+coef_kinship
 ```
+
+
 
 |      |  ID1 |  ID2 |        r |
 | ---: | ---: | ---: | -------: |
