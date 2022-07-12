@@ -9,6 +9,7 @@
   <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/zhaow-01/PyAGH">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/zhaow-01/PyAGH">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/zhaow-01/PyAGH?color=green">
+  <img alt="travis-ci" src="https://app.travis-ci.com/zhaow-01/PyAGH.svg?branch=main">
 </p> 
 
 
