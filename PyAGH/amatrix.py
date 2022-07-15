@@ -78,10 +78,11 @@ def makeA(data_ord):
     loc=loc[loc["y"] != N]
     Tinv = sparse.coo_matrix((loc["data"], (loc["y"], loc["x"])), shape=(N, N), dtype=np.float64).tocsr()
     di =  sparse.coo_matrix((np.sqrt(1/np.array(dii_c)), (np.array(range(N)), np.array(range(N)))), shape=(N,N), dtype=np.float64).tocsr()
-    X = Tinv.dot(di).tocsr() ##upper
-
-    Ip=np.identity(N)
-
-    tu = spsolve_triangular(X,Ip,False)
-    A = (tu.T).dot(tu)
+    #X = Tinv.dot(di).tocsc() ##upper
+    X = sparse.csr_matrix(Tinv.dot(di),dtype=np.float32)
+    Ip = sparse.identity(N,dtype='float32', format='dia').toarray() ## 最快的方法 7.7秒3W int8
+    tu = spsolve_triangular(X,Ip,False,overwrite_A=True, overwrite_b=True)
+    #tu = spsolve_triangular(X,Ip,False)
+    #tu = sparse.linalg.inv(X).tocsr()
+    A = tu.T.dot(tu)
     return [A, data_ord.iloc[:,0]]
