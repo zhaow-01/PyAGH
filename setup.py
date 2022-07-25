@@ -40,7 +40,7 @@ setup(
                       "polars >= 0.13.51",
                       "pybind11>= 2.9.2",
                       "matplotlib",
-                      "llvmlite == 0.38.0",
+                     
                       "numba"
                       ],
     include_package_data=True,
