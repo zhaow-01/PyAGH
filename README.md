@@ -10,12 +10,11 @@
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/zhaow-01/PyAGH">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/zhaow-01/PyAGH?color=green">
   <img alt="travis-ci" src="https://app.travis-ci.com/zhaow-01/PyAGH.svg?branch=main">
-</p> 
-
+</p>
 
 ## Introduction
 
-`PyAGH` is a Python package developed for calculating kinship matrix using pedigree or genotype data as well as  processing, analysis and visualization for data. `PyAGH` provides fast and concise methods for calculating Amatrix (based on pedigree), Gmatrix (based on genotype) and Hmatrix (based on pedigree and genotype) used in breeding. `PyAGH`supports a variety of mainstream algorithms, you can easily choose different algorithms for calculation. With the obtained relationship matrix, you can use `PyAGH` for fast visualization, including PCA analysis, Cluster analysis and drawing Heatmaps.
+`PyAGH` is a Python package developed for calculating kinship matrix using pedigree, genotype or microbiology data as well as  processing, analysis and visualization for data. `PyAGH` provides fast and concise methods for calculating Amatrix (based on pedigree), Gmatrix (based on genotype), Mmatrix(based on OTU) and Hmatrix (based on pedigree and genotype) used in breeding. `PyAGH` supports a variety of mainstream algorithms, you can easily choose different algorithms for calculation. With the obtained relationship matrix, you can use `PyAGH` for fast visualization, including PCA analysis, Cluster analysis and drawing Heatmaps.
 
 To make it easier to use pedigree information, `PyAGH ` also provides targeted tools for specific needs, such as detecting pedigree errors,  selection individuals, pedigree visualization, sorting pedigree, calculating inbreeding coefficients and calculating  relationship coefficients . The latest stable release of the software can be installed conveniently via pip .
 
@@ -41,7 +40,7 @@ Currently, `PyAGH` mainly provides the following methods:
 - **Kinship matrix:** Provides different methods to calculating Amatix, Gmatrix and Hmatrix.
 - **Visualization:** Provides methods to display results.
 
-****
+---
 
 ## Installation
 
@@ -68,17 +67,17 @@ genofile = PyAGH.loadEgGeno() #is a filename
 ped
 ```
 
-| index |   id | sire |  dam |
-| :---: | ---: | ---: | ---: |
-|   0   |    9 |    1 |    2 |
-|   1   |   10 |    3 |    4 |
-|   2   |   11 |    5 |    6 |
-|   3   |   12 |    7 |    8 |
-|   4   |   13 |    9 |   10 |
-|   5   |   14 |   11 |   12 |
-|   6   |   15 |   11 |    4 |
-|   7   |   16 |   13 |   15 |
-|   8   |   17 |   13 |   14 |
+| index | id | sire | dam |
+| :---: | -: | ---: | --: |
+|   0   |  9 |    1 |   2 |
+|   1   | 10 |    3 |   4 |
+|   2   | 11 |    5 |   6 |
+|   3   | 12 |    7 |   8 |
+|   4   | 13 |    9 |  10 |
+|   5   | 14 |   11 |  12 |
+|   6   | 15 |   11 |   4 |
+|   7   | 16 |   13 |  15 |
+|   8   | 17 |   13 |  14 |
 
 #### Sort pedigree
 
@@ -89,25 +88,25 @@ ped_sorted = PyAGH.sortPed(ped)
 ped_sorted
 ```
 
-| index |  id  | sire | dam  |
-| :---: | :--: | :--: | :--: |
-|   0   |  1   |  0   |  0   |
-|   1   |  3   |  0   |  0   |
-|   2   |  5   |  0   |  0   |
-|   3   |  7   |  0   |  0   |
-|   4   |  2   |  0   |  0   |
-|   5   |  4   |  0   |  0   |
-|   6   |  6   |  0   |  0   |
-|   7   |  8   |  0   |  0   |
-|   8   |  9   |  1   |  2   |
-|   9   |  10  |  3   |  4   |
-|  10   |  11  |  5   |  6   |
-|  11   |  12  |  7   |  8   |
-|  12   |  15  |  11  |  4   |
-|  13   |  13  |  9   |  10  |
-|  14   |  14  |  11  |  12  |
-|  15   |  16  |  13  |  15  |
-|  16   |  17  |  13  |  14  |
+| index | id | sire | dam |
+| :---: | :-: | :--: | :-: |
+|   0   | 1 |  0  |  0  |
+|   1   | 3 |  0  |  0  |
+|   2   | 5 |  0  |  0  |
+|   3   | 7 |  0  |  0  |
+|   4   | 2 |  0  |  0  |
+|   5   | 4 |  0  |  0  |
+|   6   | 6 |  0  |  0  |
+|   7   | 8 |  0  |  0  |
+|   8   | 9 |  1  |  2  |
+|   9   | 10 |  3  |  4  |
+|  10  | 11 |  5  |  6  |
+|  11  | 12 |  7  |  8  |
+|  12  | 15 |  11  |  4  |
+|  13  | 13 |  9  | 10 |
+|  14  | 14 |  11  | 12 |
+|  15  | 16 |  13  | 15 |
+|  16  | 17 |  13  | 14 |
 
 #### Select pedigree
 
@@ -118,14 +117,14 @@ ped_selected = PyAGH.selectPed(data=ped,id=['9','10'],generation=3)
 ped_selected
 ```
 
-| index |  id  | sire | dam  |
-| :---: | :--: | :--: | :--: |
-|   0   |  1   |  0   |  0   |
-|   1   |  3   |  0   |  0   |
-|   2   |  2   |  0   |  0   |
-|   3   |  4   |  0   |  0   |
-|   4   |  9   |  1   |  2   |
-|   5   |  10  |  3   |  4   |
+| index | id | sire | dam |
+| :---: | :-: | :--: | :-: |
+|   0   | 1 |  0  |  0  |
+|   1   | 3 |  0  |  0  |
+|   2   | 2 |  0  |  0  |
+|   3   | 4 |  0  |  0  |
+|   4   | 9 |  1  |  2  |
+|   5   | 10 |  3  |  4  |
 
 #### Calculate kinship matrix
 
@@ -145,42 +144,39 @@ coef_inbreeding = PyAGH.coefInbreeding(A)
 coef_inbreeding
 ```
 
-| index |  ID  |    F    |
-| :---: | :--: | :-----: |
-|   0   |  1   | 0.0000  |
-|   1   |  3   | 0.0000  |
-|   2   |  5   | 0.0000  |
-|   3   |  7   | 0.0000  |
-|   5   |  4   | 0.0000  |
-|  11   |  12  | -0.0000 |
-|  ...  | ...  |   ...   |
-|  12   |  15  | -0.0000 |
-|  13   |  13  | -0.0000 |
-|  14   |  14  | -0.0000 |
-|  15   |  16  | 0.0625  |
-|  16   |  17  | -0.0000 |
-
+| index | ID |    F    |
+| :---: | :-: | :-----: |
+|   0   |  1  | 0.0000 |
+|   1   |  3  | 0.0000 |
+|   2   |  5  | 0.0000 |
+|   3   |  7  | 0.0000 |
+|   5   |  4  | 0.0000 |
+|  11  | 12 | -0.0000 |
+|  ...  | ... |   ...   |
+|  12  | 15 | -0.0000 |
+|  13  | 13 | -0.0000 |
+|  14  | 14 | -0.0000 |
+|  15  | 16 | 0.0625 |
+|  16  | 17 | -0.0000 |
 
 ```python
 coef_kinship = PyAGH.coefKinship(A)
 coef_kinship
 ```
 
-
-
-|      |  ID1 |  ID2 |        r |
-| ---: | ---: | ---: | -------: |
-|    0 |    1 |    1 | 1.000000 |
-|    1 |    1 |    3 | 0.000000 |
-|    2 |    1 |    5 | 0.000000 |
-|    3 |    1 |    7 | 0.000000 |
-|    4 |    1 |    2 | 0.000000 |
-|  ... |  ... |  ... |      ... |
-|  148 |   14 |   16 | 0.121268 |
-|  149 |   14 |   17 | 0.500000 |
-|  150 |   16 |   16 | 1.000000 |
-|  151 |   16 |   17 | 0.333486 |
-|  152 |   17 |   17 | 1.000000 |
+|     | ID1 | ID2 |        r |
+| --: | --: | --: | -------: |
+|   0 |   1 |   1 | 1.000000 |
+|   1 |   1 |   3 | 0.000000 |
+|   2 |   1 |   5 | 0.000000 |
+|   3 |   1 |   7 | 0.000000 |
+|   4 |   1 |   2 | 0.000000 |
+| ... | ... | ... |      ... |
+| 148 |  14 |  16 | 0.121268 |
+| 149 |  14 |  17 | 0.500000 |
+| 150 |  16 |  16 | 1.000000 |
+| 151 |  16 |  17 | 0.333486 |
+| 152 |  17 |  17 | 1.000000 |
 
 153 rows × 3 columns
 
@@ -207,6 +203,7 @@ plt.savefig('pca_example.png', facecolor='w',dpi=300)
 heatmap_example = PyAGH.heat(A)
 plt.savefig('heatmap_example.png', facecolor='w',dpi=300)
 ```
+
 <div align=center>
 <img src="https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/heat_example.png" alt="heat" width="600" />
 </div>
@@ -217,8 +214,6 @@ ped_selected = PyAGH.selectPed(data=ped,id=['17'],generation=3)
 p = PyAGH.gragh(ped_selected)
 graphviz.Source(p)
 ```
-
-
 
 ![output](https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/ped_example.png)
 

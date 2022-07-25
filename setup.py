@@ -2,7 +2,7 @@ from setuptools import setup,find_packages
 import os
 
 
-__VERSION__ = '0.2.19'
+__VERSION__ = '0.2.26'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
 #BASE_DIR = os.path.dirname(__file__)
 os.chdir(BASE_DIR)
@@ -11,8 +11,8 @@ ext_modules = []
 try:
     from pybind11.setup_helpers import Pybind11Extension 
     import pybind11
-    ext_modules=[Pybind11Extension(name='FCOEFF',  # 模块名称
-                            sources=['scrc/pybind11_fcoeff.cpp'],    # 源码
+    ext_modules=[Pybind11Extension(name='FUNC',  # 模块名称
+                            sources=['scrc/function_c.cpp'],    # 源码
                             define_macros = [('VERSION_INFO', __VERSION__)],
                             language='c++',
                             cxx_std=11,
@@ -63,6 +63,5 @@ setup(
     package_data={
         '':['data/*'],
                },
-    
-    
+
 )

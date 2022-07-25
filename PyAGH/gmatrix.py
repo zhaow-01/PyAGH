@@ -10,7 +10,7 @@ import gc
 ## method=3 G_chen
 
 
-def makeG(File, method: int, File_list = False, n1 =0, n2=0): 
+def makeG(File, method, File_list = False, n1 =0, n2=0): 
     method_list =[0,1,2,3]
     if not isinstance(method, int):
         print("ERROR: Parameter method should be int type!")
@@ -238,7 +238,7 @@ def makeG(File, method: int, File_list = False, n1 =0, n2=0):
             xxbytb = xxbytb + temp_xxbytb
             G11 = G11 + G11_temp
             G12 = G12 + G12_temp
-            G22 = G22 + G22_temp
+            G22 = G22 + G22_temp                                                                                                                                       
             #print(i)
             del all_gen, xx_gen, tb_gen, z_tb, z_xx
             gc.collect()

@@ -3,8 +3,11 @@ import ctypes
 import numpy as np
 from scipy import sparse
 from scipy.sparse.linalg import spsolve_triangular
-import FCOEFF
-def makeA(data_ord):
+import gc
+import FUNC
+
+from multiprocessing import Pool
+def makeA(data_ord,Sparse=False):
     if not isinstance(data_ord, pd.DataFrame): ###必须是data.frame
         print("Please provide data with dataframe type!")
         return
@@ -63,7 +66,7 @@ def makeA(data_ord):
     sire_c = (ctypes.c_int * N) (*sire)
     f_c = (ctypes.c_double * (N+1)) (*f)
     dii_c = (ctypes.c_double * N) (*dii)
-    FCOEFF.fcoeff(dam_c,
+    FUNC.fcoeff(dam_c,
                     sire_c,  
                     f_c,       
                     dii_c, 
@@ -77,12 +80,105 @@ def makeA(data_ord):
             })
     loc=loc[loc["y"] != N]
     Tinv = sparse.coo_matrix((loc["data"], (loc["y"], loc["x"])), shape=(N, N), dtype=np.float64).tocsr()
+
     di =  sparse.coo_matrix((np.sqrt(1/np.array(dii_c)), (np.array(range(N)), np.array(range(N)))), shape=(N,N), dtype=np.float64).tocsr()
     #X = Tinv.dot(di).tocsc() ##upper
     X = sparse.csr_matrix(Tinv.dot(di),dtype=np.float32)
+
     Ip = sparse.identity(N,dtype='float32', format='dia').toarray() ## 最快的方法 7.7秒3W int8
+
     tu = spsolve_triangular(X,Ip,False,overwrite_A=True, overwrite_b=True)
+    if Sparse:
+        tu = sparse.csr_matrix(tu,dtype=np.float32)
+    del Ip, X
+    gc.collect()
     #tu = spsolve_triangular(X,Ip,False)
     #tu = sparse.linalg.inv(X).tocsr()
     A = tu.T.dot(tu)
     return [A, data_ord.iloc[:,0]]
+
+def makeD(data_ord,multi=1):
+    if not isinstance(multi, int):
+        print("ERROR: Parameter multi should be int type!")
+        return
+    if multi<1:
+        print('Error: multi must more than 1.')
+        return
+    A = makeA(data_ord,Sparse=True)
+    N = A[0].shape[0]
+    c =sparse.triu(A[0],format='csc')
+    dA = c.diagonal()
+    iAP = c.indices
+    pAP = c.indptr
+    xAP = c.data
+    dij =  [0.0]*len(xAP)
+    Di = [0]*len(iAP)
+    Dp = [0]*N
+    nPed = pd.DataFrame( {"id":pd.Series(range(N)),
+                "sire":pd.Categorical(data_ord.iloc[:,1],categories=data_ord.iloc[:,0]).codes,
+                "dam": pd.Categorical(data_ord.iloc[:,2],categories=data_ord.iloc[:,0]).codes
+    })
+    nPed[nPed == -1] = N 
+    dam = nPed["dam"]
+    sire = nPed["sire"]
+    dam_c =(ctypes.c_int * N) (*dam)
+    sire_c = (ctypes.c_int * N) (*sire)
+    iAP_c = (ctypes.c_int * len(iAP)) (*iAP)
+    pAP_c = (ctypes.c_int * len(pAP)) (*pAP)
+    xAP_c = (ctypes.c_double * len(xAP)) (*xAP/2)
+    
+    if multi ==1:
+        dij_c = (ctypes.c_double * len(xAP)) (*dij)
+        Di_c = (ctypes.c_int * len(iAP)) (*Di)
+        Dp_c = (ctypes.c_int * N) (*Dp)
+        cnt_c = ctypes.c_int(0)
+        FUNC.cald(dam_c,
+            sire_c,  
+            iAP_c,     
+            pAP_c,	         
+            xAP_c,
+            ctypes.c_int(N),
+            dij_c,
+            Di_c,
+            Dp_c,
+            cnt_c
+                )
+        D = sparse.csr_matrix((dij_c[:cnt_c.value], Di_c[:cnt_c.value], np.append(Dp_c,cnt_c)), shape=(17, 17)).toarray()
+        row, col = np.diag_indices_from(D) 
+        D[row, col] = np.array(2-dA)
+        return [D, data_ord.iloc[:,0]]
+    else:
+        global pyagh_multi_d_function
+        def pyagh_multi_d_function(sub_lA):  ###listA的一部分
+            lA_r = sub_lA.shape[0]
+            indk_c = (ctypes.c_int * lA_r) (*sub_lA.iloc[:,0])
+            indj_c = (ctypes.c_int * lA_r) (*sub_lA.iloc[:,1])
+            dij =  [0.0]*lA_r
+            dij_c = (ctypes.c_double * lA_r) (*dij)
+            FUNC.dijp(
+                dam_c,
+                sire_c,
+                ctypes.c_int(lA_r),
+                indk_c,
+                indj_c,
+                iAP_c,
+                pAP_c,
+                xAP_c,
+                dij_c
+            )
+            return list(dij_c),list(indk_c),list(indj_c)
+        listA = pd.DataFrame({
+                'Row':np.repeat(np.arange(0,len(pAP)-1),np.diff(pAP)),
+                'Column':iAP
+            })
+        data = np.array_split(listA, multi)
+        dij_list, indk_list,indj_list = [], [],[]
+        with Pool() as p:
+            for dij,indk,indj in p.map(pyagh_multi_d_function,data):   # or   imap()
+                dij_list.extend(dij)
+                indk_list.extend(indk)
+                indj_list.extend(indj)
+        D = sparse.coo_matrix((dij_list,(indk_list,indj_list)),shape=(N,N)).toarray()
+        row, col = np.diag_indices_from(D) 
+        D[row, col] = np.array(2-dA)
+        return [D, data_ord.iloc[:,0]]
