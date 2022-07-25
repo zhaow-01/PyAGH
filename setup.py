@@ -2,7 +2,7 @@ from setuptools import setup,find_packages
 import os
 
 
-__VERSION__ = '0.2.26'
+__VERSION__ = '0.2.27'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
 #BASE_DIR = os.path.dirname(__file__)
 os.chdir(BASE_DIR)
@@ -35,11 +35,12 @@ setup(
     setup_requires = ["pybind11 >= 2.9.2"],
     install_requires=["numpy >= 1.19.0",
                       "pandas >=1.1.0",
-                      "sympy ",
+                      "sympy",
                       "scipy >= 1.7.3",
                       "polars >= 0.13.51",
                       "pybind11>= 2.9.2",
                       "matplotlib",
+                      "numba >= 0.55.1"
                       ],
     include_package_data=True,
     license='MIT License',
