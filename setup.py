@@ -40,7 +40,7 @@ setup(
                       "polars >= 0.13.51",
                       "pybind11>= 2.9.2",
                       "matplotlib",
-                      "numba >= 0.55.1"
+                      "numba"
                       ],
     include_package_data=True,
     license='MIT License',
