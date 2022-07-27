@@ -7,7 +7,7 @@ import gc
 import FUNC
 
 from multiprocessing import Pool
-def makeA(data_ord,Sparse=False):
+def makeA(data_ord:pd.DataFrame,Sparse=False):
     '''Calculate the additive kinship matrix using pedigree.
 
     data_ord: a dataframe of pedigree after sort.
@@ -107,7 +107,7 @@ def makeD(data_ord,multi=1):
 
     data_ord: a dataframe of pedigree after sort.
     multi: int value. Default value is 1. This function uses multi-threaded calculation by default, 
-        if your computer has more than one cpu, you can set the value of multi equal to the number of cpu.
+    if your computer has more than one cpu, you can set the value of multi equal to the number of cpu.
     '''
     if not isinstance(multi, int):
         print("ERROR: Parameter multi should be int type!")
