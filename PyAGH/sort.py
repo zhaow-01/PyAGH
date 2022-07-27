@@ -1,6 +1,10 @@
 import pandas as pd
 
 def sortPed(data):
+    '''Sort pedigree by birthdate.
+
+    data: the pedigree data with 3 columns(id,sire,dam) in dataframe type.
+    '''
     if not isinstance(data, pd.DataFrame): ###必须是data.frame
         print("Please provide data with dataframe type!")
         return

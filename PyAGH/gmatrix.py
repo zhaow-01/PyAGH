@@ -6,11 +6,23 @@ import gc
 ## genoFile_list:两个群体合并在一起的geno文件，格式必须是traw,使用一个txt文件整合文件名  x修改支持直接输入一个文件名
 ## method=0 sum{[(xij - 2pi)*(xik - 2pi)] / [2pi(1-pi)]}/N as described in Yang et al. 2010 Nat Genet. 
 ## method=1 sum[(xij - 2pi)(xik - 2pi)] / sum[2pi(1-pi)].
-## method=2 G_new if method ==2,分别提供两个群体的数量，n1: 1号群里个体数量 n2:2号群体数量
+## method=2 G_new 
 ## method=3 G_chen
 
 
 def makeG(File, method, File_list = False, n1 =0, n2=0): 
+    '''Calculate the additive kinship matrix using genotype.
+
+    File: a filename of genotype in traw type of Plink. If File_list is True, this file contains the filename
+        of the traw file of different chromosomes.
+    method: int value of [0,1,2,3].
+    method=0 sum{[(xij - 2pi)*(xik - 2pi)] / [2pi(1-pi)]}/N as described in Yang et al. 2010 Nat Genet. 
+    method=1 sum[(xij - 2pi)(xik - 2pi)] / sum[2pi(1-pi)].
+    method=2 G_new 
+    method=3 G_chen
+    n1 & n2: int value of the number of individuals of two groups. Only useful in method 2 and 3.
+    File_list: bool value. Default value is False. 
+    '''
     method_list =[0,1,2,3]
     if not isinstance(method, int):
         print("ERROR: Parameter method should be int type!")

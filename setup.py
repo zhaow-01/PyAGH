@@ -2,7 +2,7 @@ from setuptools import setup,find_packages
 import os
 
 
-__VERSION__ = '0.2.27'
+__VERSION__ = '0.2.28'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
 #BASE_DIR = os.path.dirname(__file__)
 os.chdir(BASE_DIR)
@@ -40,7 +40,6 @@ setup(
                       "polars >= 0.13.51",
                       "pybind11>= 2.9.2",
                       "matplotlib",
-                     
                       "numba"
                       ],
     include_package_data=True,

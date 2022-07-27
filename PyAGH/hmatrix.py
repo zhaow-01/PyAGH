@@ -3,9 +3,16 @@ import numpy as np
 from numbers import Number
 import sympy
 
-def makeH(G,A,w):
+def makeH(G,A,w=0.05):
+    '''Calculate the additive kinship matrix using genotype and pedigree.
+
+    G: a list with two elements, G[0] is kinship matrix based on genotype; G[1] is id series of genotyped individuals.
+    A: a list with two elements, A[0] is kinship matrix based on pedigree; A[1] is id series of all individuals.
+    w: Default value is 0.05. The weights of the G-matrix and the A-matrix
+    '''
+
     ##提供的参数对不对 列表里包括两个元素，第一个是np矩阵，第二个是series，两者的长度要一致 w是一个数字
-    ##A[0],G[0]不能有Nan
+    ##A[0],G[0]不能有Nan9
     if not isinstance(G, list):
         print("ERROR: Parameter G should be a list!")
         return

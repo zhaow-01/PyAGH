@@ -8,6 +8,11 @@ import FUNC
 
 from multiprocessing import Pool
 def makeA(data_ord,Sparse=False):
+    '''Calculate the additive kinship matrix using pedigree.
+
+    data_ord: a dataframe of pedigree after sort.
+    Sparse: bool value. Default value is False. Using sparse matrix can save memory but consume more time.
+    '''
     if not isinstance(data_ord, pd.DataFrame): ###必须是data.frame
         print("Please provide data with dataframe type!")
         return
@@ -98,6 +103,12 @@ def makeA(data_ord,Sparse=False):
     return [A, data_ord.iloc[:,0]]
 
 def makeD(data_ord,multi=1):
+    '''Calculate the additive kinship matrix using pedigree.
+
+    data_ord: a dataframe of pedigree after sort.
+    multi: int value. Default value is 1. This function uses multi-threaded calculation by default, 
+        if your computer has more than one cpu, you can set the value of multi equal to the number of cpu.
+    '''
     if not isinstance(multi, int):
         print("ERROR: Parameter multi should be int type!")
         return

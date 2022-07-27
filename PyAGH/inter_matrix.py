@@ -4,7 +4,7 @@ import numpy as np
 #import math
 import multiprocessing
 import _thread
-import numba as nb ###比np.roll快
+import numba as nb 
 
 ''' @nb.njit(parallel=True)
 def numba_(a, shf):
@@ -111,6 +111,13 @@ def makematrix(geno,start,end,method,step):
 
 
 def makeG_inter(geno,method,multi=1):
+    '''Calculate the epistatic kinship matrix using genotype.
+
+    geno: a numpy matrix of genotype which code as 0,1 and 2. Rows are individuals and columns are SNPs.
+    method: str value of 'dd','aa','ad' or 'da'.
+    multi: int value. Default value is 1. This function uses multi-threaded calculation by default, 
+        if your computer has more than one cpu, you can set the value of multi equal to the number of cpu.
+    '''
     method_list =['dd','aa','ad','da']
     if method not in method_list:
         print("ERROR: Parameter method should be in %s" %method_list)

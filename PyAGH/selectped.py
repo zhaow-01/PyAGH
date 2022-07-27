@@ -2,6 +2,12 @@ import pandas as pd
 from .sort import sortPed
 
 def selectPed(data,id,generation=3):###缺失值用0表示
+    '''Select pedigree.
+
+    data: the whole pedigree with dataframe type.
+    id: a list containing id which want to be selected.
+    generation: int value.  Default value is 3. 
+    '''
     if not isinstance(id, list): ###必须是list
         print("Please provide id with list type!")
         return

@@ -6,7 +6,10 @@ import pandas as pd
 import numpy as np
 from .sort import sortPed
 def cluster(A):
-    
+    '''Plot the cluster of kinship matrix.
+
+    A: a list with two elements, A[0] is kinship matrix; A[1] is id series of all individuals.
+    '''
     if not isinstance(A, list):
         print("ERROR: Parameter A should be a list!")
         return
@@ -30,6 +33,11 @@ def cluster(A):
     return P
 
 def pca(A,group):
+    '''Plot the PCA of kinship matrix.
+
+    A: a list with two elements, A[0] is kinship matrix; A[1] is id series of all individuals.
+    group: a list containing information about the group of individuals.
+    '''
     if not isinstance(A, list):
         print("ERROR: Parameter A should be a list!")
         return
@@ -87,6 +95,10 @@ def pca(A,group):
     return ax
 
 def heat(A):
+    '''Plot the heatmap of kinship matrix.
+
+    A: a list with two elements, A[0] is kinship matrix; A[1] is id series of all individuals.
+    '''
     if not isinstance(A, list):
         print("ERROR: Parameter A should be a list!")
         return
@@ -122,6 +134,10 @@ def heat(A):
 
     return ax
 def gragh(data_ord):
+    '''Plot family tree in three generations of a individual.
+
+    data_ord: the pedigree of one individual in three generations.
+    '''
     data_ord = sortPed(data_ord)
     ###如果长度超过15
     if data_ord.shape[0]>15:

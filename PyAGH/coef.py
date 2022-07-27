@@ -3,6 +3,10 @@ import numpy as np
 import pandas as pd
 
 def coefInbreeding(A):
+    '''Calculate the inbreeding coefficients using kinship matrix.
+
+    A: a list with two elements, A[0] is kinship matrix; A[1] is id series
+    '''
     if not isinstance(A, list):
         print("ERROR: Parameter A should be a list!")
         return
@@ -30,6 +34,10 @@ def coefInbreeding(A):
 def getLowerTriangularIndices(n):
     return [list(x) for x in np.triu_indices(n)]
 def coefKinship(A):
+    '''Calculate the relationship coefficients using kinship matrix.
+
+    A: a list with two elements, A[0] is kinship matrix; A[1] is id series
+    '''
     if not isinstance(A, list):
         print("ERROR: Parameter A should be a list!")
         return
