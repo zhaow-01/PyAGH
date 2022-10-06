@@ -14,7 +14,7 @@
 
 ## Introduction
 
-`PyAGH` is a Python package developed for calculating kinship matrix using pedigree, genotype or microbiology data as well as  processing, analysis and visualization for data. `PyAGH` provides fast and concise methods for calculating Amatrix (based on pedigree), Gmatrix (based on genotype), Mmatrix(based on OTU) and Hmatrix (based on pedigree and genotype) used in breeding. `PyAGH` supports a variety of mainstream algorithms, you can easily choose different algorithms for calculation. With the obtained relationship matrix, you can use `PyAGH` for fast visualization, including PCA analysis, Cluster analysis and drawing Heatmaps.
+`PyAGH` is a Python package developed for calculating relationship matrix using pedigree, genotype or microbiology data as well as  processing, analysis and visualization for data. `PyAGH` provides fast and concise methods for calculating Amatrix (based on pedigree), Gmatrix (based on genotype), Mmatrix(based on OTU) and Hmatrix (based on pedigree and genotype) used in breeding. `PyAGH` supports  high marker density typing data, large pedigree data, microbiome data, additive, dominant and epistatic effects relationship matrix, relationship matrix construction across population. With the obtained relationship matrix, you can use `PyAGH` for fast visualization, including PCA analysis, Cluster analysis and drawing Heatmaps.
 
 To make it easier to use pedigree information, `PyAGH ` also provides targeted tools for specific needs, such as detecting pedigree errors,  selection individuals, pedigree visualization, sorting pedigree, calculating inbreeding coefficients and calculating  relationship coefficients . The latest stable release of the software can be installed conveniently via pip .
 
@@ -133,6 +133,8 @@ ped_selected
 ```python
 A = PyAGH.makeA(ped_sorted)
 G = PyAGH.makeG(File=genofile,method=1,File_list=False)
+G_inter = PyAGH.makeG_inter(geno,method="dd")
+M = PyAGH.makeM(OTU)
 H = PyAGH.makeH(G,A,w=0.05)
 ####A,G and H are lists with 2 elements. The first one is kinship matrix in numpy.ndarray type and the other one is id labels in pandas.Series type. 
 ```
@@ -194,7 +196,7 @@ plt.savefig('cluster_example.png', facecolor='w',dpi=300)
 ```python
 group=['1','1','1','1','1','1','1','2','2','2','2','2','2','2','2','2','2']
 pca_example = PyAGH.pca(A,group=group)
-plt.savefig('pca_example.png', facecolor='w',dpi=300)
+pca_example.savefig('pca_example.png', facecolor='w',dpi=300)
 ```
 
 ![pca](https://raw.githubusercontent.com/zhaow-01/PyAGH/main/picture/pca_example.png)

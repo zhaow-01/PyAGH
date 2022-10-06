@@ -70,6 +70,7 @@ def pca(A,group):
     
 
     plt.figure(figsize=(16,7))
+    myfig = plt.gcf()
     ax = plt.subplot(121)
     ax.plot(list(range(1,len(var)+1)), var)
     ax.set_title("PCA Variance Explained Based on Custom PCA")
@@ -92,7 +93,7 @@ def pca(A,group):
 
     handles = [pt.Patch(color=plt.cm.tab10(i), label=c) for i, c in enumerate(categories)]
     ax.legend(handles=handles,  title='Group')
-    return ax
+    return myfig
 
 def heat(A):
     '''Plot the heatmap of kinship matrix.
@@ -119,6 +120,7 @@ def heat(A):
         return
     fig = plt.figure()
     # 定义画布为1*1个划分，并在第1个位置上进行作图
+    myfig = plt.gcf()
     ax = fig.add_subplot(111)
     # 定义横纵坐标的刻度
     ax.set_yticks(range(len(A[1])))
@@ -132,7 +134,7 @@ def heat(A):
     # 增加标题
     plt.title("Heatmap of relationship matrix")
 
-    return ax
+    return myfig
 def gragh(data_ord):
     '''Plot family tree in three generations of a individual.
 

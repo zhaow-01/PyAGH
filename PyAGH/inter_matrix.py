@@ -71,7 +71,7 @@ def one_matrix(geno,start,end,step):
     for i in range(start,end,step):
         zz00 = geno[:,:-i] * geno[:,i:]
         zz11 += (zz00.dot(zz00.T)).astype(np.float64)   ##转置相乘float32就够，但是下一步加在一起，可能几十万或者几百万会影响精度
-
+        print(i)
     return zz11
 
 @nb.njit(parallel=True)
@@ -80,7 +80,7 @@ def ad_matrix(geno,Z,start,end,step):
     for i in range(start,end,step):
         zz00 = Z[:,:-i] * geno[:,i:]
         zz11 += (zz00.dot(zz00.T)).astype(np.float64)   ##转置相乘float32就够，但是下一步加在一起，可能几十万或者几百万会影响精度
-
+        print(i)
     return zz11
     
 @nb.njit(parallel=True)
@@ -90,7 +90,7 @@ def da_matrix(geno,Z,start,end,step):
     for i in range(start,end,step):
         zz00 =geno[:,:-i] * Z[:,i:]
         zz11 += (zz00.dot(zz00.T)).astype(np.float64)   ##转置相乘float32就够，但是下一步加在一起，可能几十万或者几百万会影响精度
-
+        print(i)
     return zz11
 
 def makematrix(geno,start,end,method,step):

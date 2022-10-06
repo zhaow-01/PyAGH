@@ -76,28 +76,33 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
         for i in range(genofile.shape[0]):
             chr_file = genofile.iloc[i,0]
             try:
-                all_gen = pl.read_csv(chr_file,sep="\t",null_values="NA")
+                all_gen = pl.read_csv(chr_file,sep="\t",null_values="NA").with_columns(pl.all().cast(pl.Int8, strict=False))
             except Exception as reason:
                 print(reason)
                 break
             ###这里的Z矩阵是和文献相比转置的，行是snp，列是id
-            xx_gen = all_gen[:,6:(n1+6)]
-            tb_gen = all_gen[:,(n1+6):]
+            xx_gen = all_gen[:,6:(n1+6)].to_numpy()
+            tb_gen = all_gen[:,(n1+6):].to_numpy()
+            del all_gen
+            gc.collect()
             ###检查是否有空值，再加一个检查是不是某一个snp全是空值，全是空值的话，没法补
-            if xx_gen.null_count().sum(axis=1)[0] > 0:
+            if np.isnan(xx_gen).sum() > 0:
                 print("Warning: there are mising values in first population, and imputing markers with mean value.")
-                xx_gen = xx_gen.fill_null(xx_gen.mean(axis=1))
-                if xx_gen.null_count().sum(axis=1)[0] > 0:
+                index = np.where(np.isnan(xx_gen))
+                xx_gen[index]=np.take(np.nanmean(xx_gen, axis=1),index[0])
+                if np.isnan(xx_gen).sum() > 0:
                     print("Warning: Some SNPS are missing in all individuals in first population, and imputing markers with 0.")
                     print("Warning: It is recommended that impute or filter the data first.")
-                    xx_gen = xx_gen.fill_null(0)   
-            if tb_gen.null_count().sum(axis=1)[0] > 0:
+                    xx_gen[np.isnan(xx_gen)] = 0
+            if np.isnan(tb_gen).sum() > 0:
                 print("Warning: there are mising values in second population, and imputing markers with mean value.")
-                tb_gen = tb_gen.fill_null(tb_gen.mean(axis=1))
-                if tb_gen.null_count().sum(axis=1)[0] > 0:
+                index = np.where(np.isnan(tb_gen))
+                tb_gen[index]=np.take(np.nanmean(tb_gen, axis=1),index[0])
+                if np.isnan(tb_gen).sum() > 0:
                     print("Warning: Some SNPS are missing in all individuals in second population, and imputing markers with 0.")
                     print("Warning: It is recommended that impute or filter the data first.")
-                    tb_gen = tb_gen.fill_null(0)   
+                    tb_gen[np.isnan(tb_gen)] = 0
+              
 
             p_xx = xx_gen.mean(axis=1)/2
             q_xx = 1- p_xx
@@ -107,8 +112,8 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
             q_tb = 1- p_tb
             temp_2pq_tb = (2 * p_tb * q_tb).sum()
         
-            z_xx = (xx_gen - 2*p_xx).to_numpy()
-            z_tb = (tb_gen - 2*p_tb).to_numpy()
+            z_xx = xx_gen - 2*p_xx[:,None]
+            z_tb = tb_gen - 2*p_tb[:,None]
             G22_temp = z_tb.T.dot(z_tb)
             G12_temp = z_xx.T.dot(z_tb)
             G11_temp = z_xx.T.dot(z_xx)
@@ -119,7 +124,7 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
             G12 = G12 + G12_temp
             G22 = G22 + G22_temp
             #print(i)
-            del all_gen, xx_gen, tb_gen, z_tb, z_xx
+            del xx_gen, tb_gen, z_tb, z_xx,G11_temp,G12_temp,G22_temp
             gc.collect()
         G11_new = G11/sum2pq_xx
         G12_new = G12/(sum2pq_tb ** 0.5 * sum2pq_xx ** 0.5)
@@ -133,27 +138,30 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
         for i in range(genofile.shape[0]):
             chr_file = genofile.iloc[i,0]
             try:
-                all_gen = pl.read_csv(chr_file,sep="\t",null_values="NA")
+                all_gen = pl.read_csv(chr_file,sep="\t",null_values="NA").with_columns(pl.all().cast(pl.Int8, strict=False))
             except Exception as reason:
                 print(reason)
                 break
-            gen = all_gen[:,6:]
-            if gen.null_count().sum(axis=1)[0] > 0:
+            gen = all_gen[:,6:].to_numpy()
+            del all_gen
+            gc.collect()
+            if np.isnan(gen).sum() > 0:
                 print("Warning: there are mising values in data, and imputing markers with mean value.")
-                gen = gen.fill_null(gen.mean(axis=1))
-                if gen.null_count().sum(axis=1)[0] > 0:
+                index = np.where(np.isnan(gen))
+                gen[index]=np.take(np.nanmean(gen, axis=1),index[0])
+                if np.isnan(gen).sum() > 0:
                     print("Warning: Some SNPS are missing in all individuals, and imputing markers with 0.")
                     print("Warning: It is recommended that impute or filter the data first.")
-                    gen = gen.fill_null(0)  
+                    gen[np.isnan(gen)] = 0 
             p = gen.mean(axis=1)/2
             q = 1-p
             dii =1/ (2 * p * q)
-            Z = (gen - 2 * p).to_numpy()
-            ZD = Z.T * dii.to_numpy()
+            Z = gen - 2 * p[:,None]
+            ZD = Z.T * dii
             G_temp = ZD.dot(Z)
             G = G + G_temp
             M = M + gen.shape[0]
-            del all_gen,gen, dii, ZD, Z, G_temp
+            del gen, dii, ZD, Z, G_temp
             gc.collect()
         G = G/M
         return [G,geno_id]
@@ -162,26 +170,29 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
         for i in range(genofile.shape[0]):
             chr_file = genofile.iloc[i,0]
             try:
-                all_gen = pl.read_csv(chr_file,sep="\t",null_values="NA")
+                all_gen = pl.read_csv(chr_file,sep="\t",null_values="NA").with_columns(pl.all().cast(pl.Int8, strict=False))
             except Exception as reason:
                 print(reason)
                 break
-            gen = all_gen[:,6:]
-            if gen.null_count().sum(axis=1)[0] > 0:
+            gen = all_gen[:,6:].to_numpy()  
+            del all_gen
+            gc.collect()
+            if np.isnan(gen).sum() > 0:
                 print("Warning: there are mising values in data, and imputing markers with mean value.")
-                gen = gen.fill_null(gen.mean(axis=1))
-                if gen.null_count().sum(axis=1)[0] > 0:
+                index = np.where(np.isnan(gen))
+                gen[index]=np.take(np.nanmean(gen, axis=1),index[0])
+                if np.isnan(gen).sum() > 0:
                     print("Warning: Some SNPS are missing in all individuals, and imputing markers with 0.")
                     print("Warning: It is recommended that impute or filter the data first.")
-                    gen = gen.fill_null(0)  
+                    gen[np.isnan(gen)] = 0
             p = gen.mean(axis=1)/2
             q = 1-p
             temp_2pq = (2 * p * q).sum()
-            Z = (gen - 2*p).to_numpy()
+            Z = gen - 2*p[:,None]
             G_temp = Z.T.dot(Z)
             G = G + G_temp
             sum2pq = sum2pq + temp_2pq
-            del all_gen, gen, Z, G_temp
+            del gen, Z, G_temp
             gc.collect()
         G = G/sum2pq
         return [G,geno_id]
@@ -205,27 +216,32 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
         for i in range(genofile.shape[0]):
             chr_file = genofile.iloc[i,0]
             try:
-                all_gen = pl.read_csv(chr_file,sep="\t",null_values="NA")
+                all_gen = pl.read_csv(chr_file,sep="\t",null_values="NA").with_columns(pl.all().cast(pl.Int8, strict=False))
             except Exception as reason:
                 print(reason)
                 break
             ###这里的Z矩阵是和文献相比转置的，行是snp，列是id
-            xx_gen = all_gen[:,6:(n1+6)]
-            tb_gen = all_gen[:,(n1+6):]
-            if xx_gen.null_count().sum(axis=1)[0] > 0:
+            xx_gen = all_gen[:,6:(n1+6)].to_numpy()
+            tb_gen = all_gen[:,(n1+6):].to_numpy()
+            del all_gen
+            gc.collect()
+            if np.isnan(xx_gen).sum() > 0:
                 print("Warning: there are mising values in first population, and imputing markers with mean value.")
-                xx_gen = xx_gen.fill_null(xx_gen.mean(axis=1))
-                if xx_gen.null_count().sum(axis=1)[0] > 0:
+                index = np.where(np.isnan(xx_gen))
+                xx_gen[index]=np.take(np.nanmean(xx_gen, axis=1),index[0])
+                if np.isnan(xx_gen).sum() > 0:
                     print("Warning: Some SNPS are missing in all individuals in first population, and imputing markers with 0.")
                     print("Warning: It is recommended that impute or filter the data first.")
-                    xx_gen = xx_gen.fill_null(0)   
-            if tb_gen.null_count().sum(axis=1)[0] > 0:
+                    xx_gen[np.isnan(xx_gen)] = 0
+            if np.isnan(tb_gen).sum() > 0:
                 print("Warning: there are mising values in second population, and imputing markers with mean value.")
-                tb_gen = tb_gen.fill_null(tb_gen.mean(axis=1))
-                if tb_gen.null_count().sum(axis=1)[0] > 0:
+                index = np.where(np.isnan(tb_gen))
+                tb_gen[index]=np.take(np.nanmean(tb_gen, axis=1),index[0])
+                if np.isnan(tb_gen).sum() > 0:
                     print("Warning: Some SNPS are missing in all individuals in second population, and imputing markers with 0.")
                     print("Warning: It is recommended that impute or filter the data first.")
-                    tb_gen = tb_gen.fill_null(0)
+                    tb_gen[np.isnan(tb_gen)] = 0
+
             p_xx = xx_gen.mean(axis=1)/2
             q_xx = 1- p_xx
             xx_gen_list = 2 * p_xx * q_xx #每一个snp的2pq
@@ -238,8 +254,8 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
             temp_2pq_tb = tb_gen_list.sum()
             temp_xxbytb = ((xx_gen_list * tb_gen_list) ** 0.5).sum()  ##
             
-            z_xx = (xx_gen - 2 * p_xx).to_numpy()
-            z_tb = (tb_gen - 2 * p_tb).to_numpy()
+            z_xx = xx_gen - 2 * p_xx[:,None]
+            z_tb = tb_gen - 2 * p_tb[:,None]
             
             G11_temp = z_xx.T.dot(z_xx)
             G12_temp = z_xx.T.dot(z_tb)
@@ -252,7 +268,7 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
             G12 = G12 + G12_temp
             G22 = G22 + G22_temp                                                                                                                                       
             #print(i)
-            del all_gen, xx_gen, tb_gen, z_tb, z_xx
+            del xx_gen, tb_gen, z_tb, z_xx,G11_temp,G12_temp,G22_temp
             gc.collect()
         G11_chen = G11/sum2pq_xx
         G12_chen = G12/xxbytb
