@@ -3,7 +3,7 @@ import pandas as pd
 import polars as pl
 import gc
 
-## genoFile_list:The geno file that combines two groups must be in the format of traw, and use a txt file to integrate the file name
+## genoFile_list:两个群体合并在一起的geno文件，格式必须是traw,使用一个txt文件整合文件名  x修改支持直接输入一个文件名
 ## method=0 sum{[(xij - 2pi)*(xik - 2pi)] / [2pi(1-pi)]}/N as described in Yang et al. 2010 Nat Genet. 
 ## method=1 sum[(xij - 2pi)(xik - 2pi)] / sum[2pi(1-pi)].
 ## method=2 G_new 
@@ -32,9 +32,9 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
         return
     if File_list:   
         try:
-            genofile = pd.read_table(File,header=None)  
+            genofile = pd.read_table(File,header=None)  ##读取包含每条染色体文件名的文件，失败报错
             for i in range(genofile.shape[0]):
-                if genofile.iloc[i,0].endswith('.traw'):  
+                if genofile.iloc[i,0].endswith('.traw'):  ##判断是不是traw格式,并不知道文件存不存在
                     pass
                 else:
                     print("ERROR: genotype file type should be .traw of PLINK")
@@ -46,17 +46,17 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
     try:
         temp = open(genofile.iloc[0,0],"r")  
         line1 = temp.readline().split()
-        ###Extract the individual ID and return it together with the G matrix               
+        ###提取出个体id，最后和G矩阵一起返回                  
         geno_id =   pd.Series(line1[6:])                  
 
-        N = len(line1)-6 
+        N = len(line1)-6 ##个体数 ##只读第一行标题 N在方法2和3中有需要
         
-        G = np.zeros(N)  
+        G = np.zeros(N)  ###G在方法0 1 中需要
 
     except Exception as reason:
         print(str(reason))
     if method == 2:
-       
+        ##判断一下n1+n2=N
         if not isinstance(n1, int) or not isinstance(n2, int):
             print("ERROR: Parameter n1 and n2 should be a int")
             return
@@ -80,12 +80,12 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
             except Exception as reason:
                 print(reason)
                 break
-            ###The Z matrix here is transposed compared to the literature, with the row being snp and the column being id
+            ###这里的Z矩阵是和文献相比转置的，行是snp，列是id
             xx_gen = all_gen[:,6:(n1+6)].to_numpy()
             tb_gen = all_gen[:,(n1+6):].to_numpy()
             del all_gen
             gc.collect()
-            ###Check whether there are null values, and then add another check to see if a certain snp is all null values. 
+            ###检查是否有空值，再加一个检查是不是某一个snp全是空值，全是空值的话，没法补
             if np.isnan(xx_gen).sum() > 0:
                 print("Warning: there are mising values in first population, and imputing markers with mean value.")
                 index = np.where(np.isnan(xx_gen))
@@ -106,7 +106,7 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
 
             p_xx = xx_gen.mean(axis=1)/2
             q_xx = 1- p_xx
-            temp_2pq_xx = (2 * p_xx * q_xx).sum() 
+            temp_2pq_xx = (2 * p_xx * q_xx).sum() #每一个snp的2pq
 
             p_tb = tb_gen.mean(axis=1)/2
             q_tb = 1- p_tb
@@ -197,7 +197,7 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
         G = G/sum2pq
         return [G,geno_id]
     if method == 3:
-
+        ##判断n1 和n2,  n1+n2应该等于N
         if not isinstance(n1, int) or not isinstance(n2, int):
             print("ERROR: Parameter n1 and n2 should be a int")
             return
@@ -220,7 +220,7 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
             except Exception as reason:
                 print(reason)
                 break
-
+            ###这里的Z矩阵是和文献相比转置的，行是snp，列是id
             xx_gen = all_gen[:,6:(n1+6)].to_numpy()
             tb_gen = all_gen[:,(n1+6):].to_numpy()
             del all_gen
@@ -244,15 +244,15 @@ def makeG(File, method, File_list = False, n1 =0, n2=0):
 
             p_xx = xx_gen.mean(axis=1)/2
             q_xx = 1- p_xx
-            xx_gen_list = 2 * p_xx * q_xx 
+            xx_gen_list = 2 * p_xx * q_xx #每一个snp的2pq
 
             p_tb = tb_gen.mean(axis=1)/2
             q_tb = 1- p_tb
-            tb_gen_list = 2 * p_tb * q_tb 
+            tb_gen_list = 2 * p_tb * q_tb #每一个snp的2pq
 
-            temp_2pq_xx = xx_gen_list.sum()  
+            temp_2pq_xx = xx_gen_list.sum()  ##2pq的和
             temp_2pq_tb = tb_gen_list.sum()
-            temp_xxbytb = ((xx_gen_list * tb_gen_list) ** 0.5).sum()  
+            temp_xxbytb = ((xx_gen_list * tb_gen_list) ** 0.5).sum()  ##
             
             z_xx = xx_gen - 2 * p_xx[:,None]
             z_tb = tb_gen - 2 * p_tb[:,None]

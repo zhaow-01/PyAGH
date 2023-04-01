@@ -1,4 +1,4 @@
-###Returns the coefficient of kinship and inbreeding
+###返回亲缘系数和近交系数
 import numpy as np
 import pandas as pd
 

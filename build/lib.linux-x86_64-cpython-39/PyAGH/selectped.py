@@ -1,14 +1,14 @@
 import pandas as pd
 from .sort import sortPed
 
-def selectPed(data,id,generation=3):###Missing values are represented by 0
+def selectPed(data,id,generation=3):###缺失值用0表示
     '''Select pedigree.
 
     data: the whole pedigree with dataframe type.
     id: a list containing id which want to be selected.
     generation: int value.  Default value is 3. 
     '''
-    if not isinstance(id, list): ###must list
+    if not isinstance(id, list): ###必须是list
         print("Please provide id with list type!")
         return
     if not isinstance(generation, int):
@@ -19,7 +19,7 @@ def selectPed(data,id,generation=3):###Missing values are represented by 0
         return
     ped_ord = sortPed(data)
     
-    ###Judge whether the individuals provided in the ID are all in the ped
+    ###判断id里面提供的个体是不是都在ped里面
     id = pd.Series(id).astype(str)
     if not all(id.isin(ped_ord['id'])):
         print("ERROR: there are some id not in the pedigree.")
@@ -30,7 +30,7 @@ def selectPed(data,id,generation=3):###Missing values are represented by 0
     while i < generation:
         
         i += 1
-
+        ##去除重复和0
         id = pd.concat([ped_select['sire'],ped_select['dam']])
         id = id.drop_duplicates()
         id = id[id != '0']

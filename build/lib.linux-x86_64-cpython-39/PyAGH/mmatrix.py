@@ -5,7 +5,7 @@ def makeM(otu):
     
     otu: OTU data in numpy ndarray type. Rows are individuals and columns are OTUs.
     '''
-    ###No null value detected
+    ###检测没有空值
     if not isinstance(otu, np.ndarray):
         print("ERROR: OTU matrix should be numpy ndarray")
         return
@@ -24,7 +24,7 @@ def makeT(trans):
     
     trans: transcriptome data in numpy ndarray type. Rows are individuals and columns are transcriptome.
     '''
-    ###No null value detected
+    ###检测没有空值
     if not isinstance(trans, np.ndarray):
         print("ERROR: trans matrix should be numpy ndarray")
         return

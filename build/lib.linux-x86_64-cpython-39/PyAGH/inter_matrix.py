@@ -1,3 +1,4 @@
+##显性效应怎么标准化？
 
 import numpy as np
 #import math
@@ -69,7 +70,7 @@ def one_matrix(geno,start,end,step):
     zz11 = np.zeros((geno.shape[0],geno.shape[0]))
     for i in range(start,end,step):
         zz00 = geno[:,:-i] * geno[:,i:]
-        zz11 += (zz00.dot(zz00.T)).astype(np.float64)   
+        zz11 += (zz00.dot(zz00.T)).astype(np.float64)   ##转置相乘float32就够，但是下一步加在一起，可能几十万或者几百万会影响精度
         print(i)
     return zz11
 
@@ -78,7 +79,7 @@ def ad_matrix(geno,Z,start,end,step):
     zz11 = np.zeros((geno.shape[0],geno.shape[0]))
     for i in range(start,end,step):
         zz00 = Z[:,:-i] * geno[:,i:]
-        zz11 += (zz00.dot(zz00.T)).astype(np.float64)  
+        zz11 += (zz00.dot(zz00.T)).astype(np.float64)   ##转置相乘float32就够，但是下一步加在一起，可能几十万或者几百万会影响精度
         print(i)
     return zz11
     
@@ -88,23 +89,23 @@ def da_matrix(geno,Z,start,end,step):
     zz11 = np.zeros((geno.shape[0],geno.shape[0]))
     for i in range(start,end,step):
         zz00 =geno[:,:-i] * Z[:,i:]
-        zz11 += (zz00.dot(zz00.T)).astype(np.float64)  
+        zz11 += (zz00.dot(zz00.T)).astype(np.float64)   ##转置相乘float32就够，但是下一步加在一起，可能几十万或者几百万会影响精度
         print(i)
     return zz11
 
 def makematrix(geno,start,end,method,step):
     if method == 'dd':
-        geno[geno==2] = 0  ### W matrix
+        geno[geno==2] = 0  ### W矩阵
         zz11 = one_matrix(geno,start,end,step)
     if method =='aa':
         zz11 = one_matrix(geno,start,end,step)
     if method =='ad':
-        Z = geno  ###Z matrix
-        geno[geno==2] = 0 
+        Z = geno  ###Z矩阵
+        geno[geno==2] = 0  ### W矩阵
         zz11 = ad_matrix(geno,Z,start,end,step)
     if method =='da':
-        Z = geno 
-        geno[geno==2] = 0  
+        Z = geno  ###Z矩阵
+        geno[geno==2] = 0  ### W矩阵
         zz11 = da_matrix(geno,Z,start,end,step)
     return zz11
 
@@ -121,7 +122,7 @@ def makeG_inter(geno,method,multi=1):
     if method not in method_list:
         print("ERROR: Parameter method should be in %s" %method_list)
         return
-
+    ###输入的geno,行是个体，列是snp，编码为012
     if not isinstance(geno, np.ndarray):
         print("ERROR: geno data should be numpy ndarray type")
         return

@@ -44,11 +44,11 @@ Currently, `PyAGH` mainly provides the following methods:
 
 ## Installation
 
-It is recommended to use `Python 3.7, 3.8, 3.9`
+It is recommended to use `Python 3.9`
 
 ### Using pypi
 
-`PyAGH`can be installed by using `pip install`.Before installing `PyAGH`, make sure that you have support the   C++ compilation.
+`PyAGH`can be installed by using `pip install`.
 
 ```shell
 pip install PyAGH

@@ -1,4 +1,4 @@
-# `PyAGH` manual
+#  `PyAGH` manual
 
 ## Introduction
 
@@ -6,11 +6,11 @@
 
 ## Installation
 
-It is recommended to use `Python 3.7, 3.8, 3.9`
+It is recommended to use `Python 3.9`
 
 ### Using pypi
 
-`PyAGH`can be installed by using `pip install`.Before installing `PyAGH`, make sure that you have support the   C++ compilation.
+`PyAGH`can be installed by using `pip install`.
 
 ```shell
 pip install PyAGH
@@ -52,15 +52,13 @@ pip install PyAGH
 
 ## Functions
 
+---
 
+`<span id="1">loadEgPed()`						Function to load pedigree example data
 
-------
+`<span id="2">loadEgGeno()`                      Function to load genotype example data
 
-<span id="1">`loadEgPed()`</span>						Function to load pedigree example data	
-
-<span id="2">`loadEgGeno()` </span>                     Function to load genotype example data	
-
-------
+---
 
 #### Description
 
@@ -82,13 +80,11 @@ None
 
 Return a pandas.DataFrame of example pedigree and a genotype file path.
 
+---
 
+`<span id="3">sortPed()`                         Function to sort the pedigree data
 
-------
-
-<span id="3">`sortPed()` </span>                        Function to sort the pedigree data
-
-------
+---
 
 #### Description
 
@@ -100,21 +96,19 @@ Sort the pedigree  data according to the correct birth date of individuals and c
 ped_sorted = PyAGH.sortPed(ped)
 ```
 
-####  Arguments
+#### Arguments
 
 ped       a pandas.DataFrame with three columns  ID, SIRE, DAM. Null values in the data are replaced by 0.
 
 #### Value
 
-Return a pandas.DataFrame of sorted pedigree. 
+Return a pandas.DataFrame of sorted pedigree.
 
+---
 
+`<span id="4">selectPed()`                   Function to select pedigree
 
-------
-
-<span id="4">`selectPed()`</span>                   Function to select pedigree
-
-------
+---
 
 #### Description
 
@@ -136,15 +130,13 @@ generation			   a int type number represents the number of generations to be tra
 
 #### Value
 
-Return a pandas.DataFrame of selected pedigree. 
+Return a pandas.DataFrame of selected pedigree.
 
+---
 
+`<span id="5">makeA()`				          Function to calculate the relationship matrix based on pedigree information
 
-------
-
-<span id="5">`makeA()`</span>				          Function to calculate the relationship matrix based on pedigree information
-
-------
+---
 
 #### Description
 
@@ -166,13 +158,11 @@ Sparse                      logic, if True uses sparse matrix
 
 Return a tuple with 2 elements. The first one  a numpy array or a sparse matrix. Second is a list of ID.
 
+---
 
+`<span id="6">makeD()`					   Function to calculate the relationship matrix based on pedigree information
 
-------
-
-<span id="6">`makeD()`</span>					   Function to calculate the relationship matrix based on pedigree information
-
-------
+---
 
 #### Description
 
@@ -194,13 +184,11 @@ multi                        a int type number for multithreading.  Default valu
 
 Return a tuple with 2 elements. The first one  a numpy array . Second is a list of ID.
 
+---
 
+`<span id="7">makeG()`				      Function to calculate a relationship matrix from marker data, G matrix.
 
-------
-
-<span id="7">`makeG()`</span>				      Function to calculate a relationship matrix from marker data, G matrix.
-
-------
+---
 
 #### Description
 
@@ -226,13 +214,11 @@ n1, n2					  when the method is 2 or 3, the number of individuals in each popula
 
 Return a tuple with 2 elements. The first one  a numpy array . Second is a list of ID.
 
+---
 
+`<span id="8">makeG_inter()`		 Function to calculate a relationship matrix from marker data for epistatic effect
 
-------
-
-<span id="8">`makeG_inter()`</span>		 Function to calculate a relationship matrix from marker data for epistatic effect
-
-------
+---
 
 #### Description
 
@@ -256,17 +242,15 @@ multi 				   a int type number for multithreading.  Default value is 1. This fun
 
 Return a tuple with 2 elements. The first one  a numpy array . Second is a list of ID.
 
+---
 
+`<span id="9">makeM()`                   Function to calculate a relationship matrix based on microbiome data
 
-------
-
-<span id="9">`makeM()`</span>                   Function to calculate a relationship matrix based on microbiome data
-
-------
+---
 
 #### Description
 
-Construct relationship based on microbiome data. 
+Construct relationship based on microbiome data.
 
 #### Usage
 
@@ -282,13 +266,11 @@ otu                  OTU data in numpy ndarray type. Rows are individuals and co
 
 Return a tuple with 2 elements. The first one  a numpy array . Second is a list of ID.
 
+---
 
+`<span id="10">makeH()`                Function to construct relationship based on pedigree and genotype data
 
-------
-
-<span id="10">`makeH()`</span>                Function to construct relationship based on pedigree and genotype data
-
-------
+---
 
 #### Description
 
@@ -312,13 +294,11 @@ H = makeH(G,A,w=0.05)
 
 Return a tuple with 2 elements. The first one  a numpy array . Second is a list of ID.
 
+---
 
+`<span id="11">coefKinship()`                Calculates the relationship coefficients using relationship matrix
 
-------
-
-<span id="11">`coefKinship()`</span>                Calculates the relationship coefficients using relationship matrix
-
-------
+---
 
 #### Description
 
@@ -338,13 +318,11 @@ A                  a list with two elements, A[0] is relationship matrix; A[1] i
 
 Return a pandas.DataFrame with relationship coefficients.
 
+---
 
+`<span id="12"> coefInbreeding()`           Calculates inbreeding coefficients for individuals
 
-------
-
-<span id="12">` coefInbreeding()`</span>           Calculates inbreeding coefficients for individuals 
-
-------
+---
 
 #### Description
 
@@ -364,13 +342,11 @@ A                  a list with two elements, A[0] is relationship matrix; A[1] i
 
 Return a pandas.DataFrame with inbreeding coefficients.
 
+---
 
+`<span id="13">cluster()`                          Plot the cluster result of relationship matrix
 
-------
-
-<span id="13">`cluster()`</span>                          Plot the cluster result of relationship matrix
-
-------
+---
 
 #### Description
 
@@ -379,7 +355,7 @@ Cluster analysis of the relationship matrix and plot the result.
 #### Usage
 
 ```python
-cluster_example = PyAGH.cluster(A)
+cluster_example = PyAGH.cluster(A,color_threshold=0.9,above_threshold_color='gray')
 plt.savefig('cluster_example.png', facecolor='w',dpi=300)
 ```
 
@@ -387,17 +363,17 @@ plt.savefig('cluster_example.png', facecolor='w',dpi=300)
 
 A                  a list with two elements, A[0] is relationship matrix; A[1] is id series
 
+color_threshold                 an optional parameter that can be used to set at which clustering distance the lines in the dendrogram plot should be changed to above_threshold_color.
+
 #### Value
 
 Figure
 
+---
 
+`<span id="14">pca()`                                 Principal component analysis of relationship matrix
 
-------
-
-<span id="14">`pca()`</span>                                 Principal component analysis of relationship matrix
-
-------
+---
 
 #### Description
 
@@ -406,7 +382,7 @@ Principal component analysis of relationship matrix and plot the result.
 #### Usage
 
 ```python
-pca_example = PyAGH.pca(A,group)
+pca_example = PyAGH.pca(A,group,color)
 plt.savefig('pca_example.png', facecolor='w',dpi=300)
 ```
 
@@ -416,17 +392,17 @@ A                  a list with two elements, A[0] is relationship matrix; A[1] i
 
 group          a list containing information about the group of individuals.
 
+color            a list containing color of different group.
+
 #### Value
 
 Figure
 
+---
 
+`<span id="15">heat()`                          Plot the heatmap of relationship matrix
 
-------
-
-<span id="15">`heat()`</span>                          Plot the heatmap of relationship matrix
-
-------
+---
 
 #### Description
 
@@ -447,13 +423,11 @@ A                  a list with two elements, A[0] is relationship matrix; A[1] i
 
 Figure
 
+---
 
+`<span id="16">gragh()`                       Plot family tree in three generations of a individual
 
-------
-
-<span id="16">`gragh()` </span>                      Plot family tree in three generations of a individual
-
-------
+---
 
 #### Description
 
@@ -464,7 +438,7 @@ Figure
 ```python
 import graphviz
 ped_selected = PyAGH.selectPed(data=ped,id=['17'],generation=3)
-p = PyAGH.gragh(ped_selected)
+p = PyAGH.gragh(ped_selected,color_sire="blue",color_dam="red",fillcolor_sire="lightblue",fillcolor_dam="pink")
 graphviz.Source(p)
 ```
 
@@ -472,7 +446,14 @@ graphviz.Source(p)
 
  data_ord                  the pedigree of one individual in three generations.
 
+color_sire                  the color of sire.
+
+color_dam                 the color of dam.
+
+fillcolor_sire               the fillcolor of sire.
+
+fillcolor_dam              the fillcolor of dam.
+
 #### Value
 
 Figure
-

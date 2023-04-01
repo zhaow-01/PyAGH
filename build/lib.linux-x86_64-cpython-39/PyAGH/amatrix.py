@@ -13,7 +13,7 @@ def makeA(data_ord:pd.DataFrame,Sparse=False):
     data_ord: a dataframe of pedigree after sort.
     Sparse: bool value. Default value is False. Using sparse matrix can save memory but consume more time.
     '''
-    if not isinstance(data_ord, pd.DataFrame): ###data.frame
+    if not isinstance(data_ord, pd.DataFrame): ###必须是data.frame
         print("Please provide data with dataframe type!")
         return
     if data_ord.shape[0] == 0:
@@ -28,28 +28,28 @@ def makeA(data_ord:pd.DataFrame,Sparse=False):
     if data_ord.iloc[:,2].shape[0] != data_ord.iloc[:,1].shape[0]:
         print("sire and dam have to be of the same length")
         return
-    ##if exist na，use sort_ped
+    ##如果存在na，使用sort_ped函数
     if any(data_ord.isnull().any()):
         print("There is Nan in data, first use the 'sort_ped' function")
         return
     data_ord = data_ord.astype(str)
-    ###If there are duplicate rows, use the sort_ped function
+    ###如果存在重复的行，使用sort——ped函数
     if any(data_ord.duplicated()):
         print("Duplicate in data, first use the 'sort_ped' function")
         return
-    ##Check for errors where the same individuals exist but the parents are not the same, that is, there are only duplicates in the individual column
-    if any(data_ord.iloc[:,0].duplicated()): 
+
+    if any(data_ord.iloc[:,0].duplicated()): ##检查存在相同个体但父母却不相同的错误,即仅在个体列存在重复的情况
         print("some individuals appear more than once in the pedigree")
         return
-    ###Check if all parents are 0
+    ###检查是否所有父母都为0
     if all(data_ord.iloc[:,1] =="0") and all(data_ord.iloc[:,2]=="0"):
         print("All dams and sires are missing")
         return
-    ##Check for errors where individuals appear in both the father and mother columns
+    ##检查个体同时出现在父亲列和母亲列的错误
     if any(data_ord[data_ord.iloc[:,1] != "0"].iloc[:,1].isin(data_ord[data_ord.iloc[:,1] != "0"].iloc[:,2])):
         print("Dams appearing as Sires")
         return
-    ###Check whether an individual is their own parent
+    ###检查一个个体本身是不是自己的父母
     if any(data_ord.iloc[:,0] == data_ord.iloc[:,1]) or any(data_ord.iloc[:,0] == data_ord.iloc[:,2]):
         print("Individual appearing as its own Sire or Dam")
         return
@@ -90,7 +90,7 @@ def makeA(data_ord:pd.DataFrame,Sparse=False):
     #X = Tinv.dot(di).tocsc() ##upper
     X = sparse.csr_matrix(Tinv.dot(di),dtype=np.float32)
 
-    Ip = sparse.identity(N,dtype='float32', format='dia').toarray() ## 
+    Ip = sparse.identity(N,dtype='float32', format='dia').toarray() ## 最快的方法 7.7秒3W int8
 
     tu = spsolve_triangular(X,Ip,False,overwrite_A=True, overwrite_b=True)
     if Sparse:

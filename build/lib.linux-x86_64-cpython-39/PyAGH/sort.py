@@ -5,7 +5,7 @@ def sortPed(data):
 
     data: the pedigree data with 3 columns(id,sire,dam) in dataframe type.
     '''
-    if not isinstance(data, pd.DataFrame): ###must data.frame
+    if not isinstance(data, pd.DataFrame): ###必须是data.frame
         print("Please provide data with dataframe type!")
         return
     if data.shape[0] == 0:
@@ -20,31 +20,31 @@ def sortPed(data):
     if data.iloc[:,2].shape[0] != data.iloc[:,1].shape[0]:
         print("sire and dam have to be of the same length")
         return
-    ###The missing values in the input data are NA and 0. If NA exists, it will be converted to 0
+    ###输入的数据中缺失值为NA和0，如果存在NA，转换为0
     data.fillna(0)
-    ###Remove completely duplicate rows
+    ###去除完全重复的行 
     data = data.astype(str)
     data = data[~data.duplicated()]
 
-    if any(data.iloc[:,0].duplicated()): ##Check for errors where the same individuals exist but the parents are not the same, that is, there are only duplicates in the individual column
+    if any(data.iloc[:,0].duplicated()): ##检查存在相同个体但父母却不相同的错误,即仅在个体列存在重复的情况
         print("some individuals appear more than once in the pedigree")
         return
-    ###Check if all parents are 0
+    ###检查是否所有父母都为0
     if all(data.iloc[:,1] =="0") and all(data.iloc[:,2]=="0"):
         print("All dams and sires are missing")
         return
-    ##Check for errors where individuals appear in both the father and mother columns
+    ##检查个体同时出现在父亲列和母亲列的错误
     if any(data[data.iloc[:,1] != "0"].iloc[:,1].isin(data[data.iloc[:,1] != "0"].iloc[:,2])):
         print("Dams appearing as Sires")
         return
-    ###Check whether an individual is their own parent
+    ###检查一个个体本身是不是自己的父母
     if any(data.iloc[:,0] == data.iloc[:,1]) or any(data.iloc[:,0] == data.iloc[:,2]):
         print("Individual appearing as its own Sire or Dam")
         return
     
     tmp = pd.concat([data.iloc[:,1],(data.iloc[:,2])]).drop_duplicates().astype(str)
     tmp = tmp.reset_index(drop=True)
-    tmp.drop(tmp[tmp == "0"].index,inplace=True) #missing value is 0
+    tmp.drop(tmp[tmp == "0"].index,inplace=True) #缺失值为0
     index = ~tmp.isin(data.iloc[:,0].astype(str))
     missingP =pd.Series(dtype=str)
     if any(index):

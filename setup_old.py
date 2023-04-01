@@ -1,14 +1,26 @@
-from setuptools import setup,find_packages,Extension
+from setuptools import setup,find_packages
 import os
 
-os.environ["CC"] = "g++"  # 指定编译器为 g++
-os.environ["CXX"] = "g++"
-__VERSION__ = '0.3.2'
+
+__VERSION__ = '0.3.1'
 #BASE_DIR = os.path.dirname(os.path.abspath(__file__))  ##
 BASE_DIR = os.path.dirname(__file__)
 os.chdir(BASE_DIR)
 
+ext_modules = []
+try:
+    from pybind11.setup_helpers import Pybind11Extension 
+    import pybind11
+    ext_modules=[Pybind11Extension(name='FUNC',  # 模块名称
+                            sources=['scrc/function_c.cpp'],    # 源码
+                            define_macros = [('VERSION_INFO', __VERSION__)],
+                            language='c++',
+                            cxx_std=11,
+                            include_dirs = [pybind11.get_include()],
+                           )]
 
+except ImportError:
+    pass
 
 setup(
 
@@ -48,9 +60,7 @@ setup(
           'Programming Language :: C++',
           'Topic :: Scientific/Engineering :: Bio-Informatics',
       ],
-    ext_modules=[Extension(name='FUNC',  # 模块名称
-                            sources=['scrc/function_c.cpp']  # 源码
-                           )],
+    ext_modules=ext_modules,
     package_data={
         '':['data/*'],
                },

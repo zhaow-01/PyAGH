@@ -11,8 +11,8 @@ def makeH(G,A,w=0.05):
     w: Default value is 0.05. The weights of the G-matrix and the A-matrix
     '''
 
-    ##Check whether the provided parameters are correct. The list includes two elements, the first is an np matrix, and the second is a series. The length of both must be consistent. W is a number
-    ##A[0],G[0] Nan
+    ##提供的参数对不对 列表里包括两个元素，第一个是np矩阵，第二个是series，两者的长度要一致 w是一个数字
+    ##A[0],G[0]不能有Nan9
     if not isinstance(G, list):
         print("ERROR: Parameter G should be a list!")
         return
@@ -59,7 +59,7 @@ def makeH(G,A,w=0.05):
         print("ERROR: Parameter w should between 0 and 1")
         return
     
-    ##We need to check if all the sequenced individuals are in the pedigree
+    ##要检查一下测序个体是不是都在系谱
     A[1] = A[1].astype(str)
     G[1] = G[1].astype(str)
     if not all(G[1].isin(A[1])):
@@ -67,9 +67,9 @@ def makeH(G,A,w=0.05):
         return
 
     geno_id_loc = A[1][A[1].isin(G[1])] 
-    index_geno = geno_id_loc.iloc[list(map(geno_id_loc.tolist().index,G[1]))].index ###The index extracted in the A-matrix in the order of the sequencing individuals provided
-    index_nogeno = A[1][~A[1].isin(G[1])].index ##Index of the remaining non sequenced individuals
-    ##subset
+    index_geno = geno_id_loc.iloc[list(map(geno_id_loc.tolist().index,G[1]))].index ###按照提供的测序个体的顺序提取的在A矩阵中的index
+    index_nogeno = A[1][~A[1].isin(G[1])].index ##剩下的非测序个体的index
+    ##提取子集
     A11 = A[0][index_nogeno,:][:,index_nogeno]
     A12 = A[0][index_nogeno,:][:,index_geno]
     A21 = A[0][index_geno,:][:,index_nogeno]

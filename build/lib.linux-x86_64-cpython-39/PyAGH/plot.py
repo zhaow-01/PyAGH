@@ -5,7 +5,7 @@ import matplotlib.patches as pt
 import pandas as pd
 import numpy as np
 from .sort import sortPed
-def cluster(A,color_threshold=0.9,above_threshold_color='gray'):
+def cluster(A):
     '''Plot the cluster of kinship matrix.
 
     A: a list with two elements, A[0] is kinship matrix; A[1] is id series of all individuals.
@@ -29,11 +29,10 @@ def cluster(A,color_threshold=0.9,above_threshold_color='gray'):
         print("ERROR: The dimension of A is not equal to the number of individual with genotyped")
         return
     Z = hierarchy.linkage(A[0], method ='average',metric='euclidean')
-    P = hierarchy.dendrogram(Z,labels=list(A[1]),color_threshold=color_threshold, 
-                      above_threshold_color=above_threshold_color)
+    P = hierarchy.dendrogram(Z,labels=list(A[1]))
     return P
 
-def pca(A,group,color=[]):
+def pca(A,group):
     '''Plot the PCA of kinship matrix.
 
     A: a list with two elements, A[0] is kinship matrix; A[1] is id series of all individuals.
@@ -68,6 +67,7 @@ def pca(A,group,color=[]):
     total_var = explained_variance.sum()
     explained_variance_ratio = explained_variance / total_var 
     var=np.cumsum(np.round(explained_variance_ratio, decimals=3)*100)
+    
 
     plt.figure(figsize=(16,7))
     myfig = plt.gcf()
@@ -82,16 +82,13 @@ def pca(A,group,color=[]):
     "PC2":V[:,1]
             })
     levels, categories = pd.factorize(pcs['group'])
-    if len(color)==0: 
-        colors = [plt.cm.tab10(i) for i in levels]  
-    else:
-        colors = color
+    colors = [plt.cm.tab10(i) for i in levels]  ###暂时选择10种默认颜色，可能不够用
     ax = plt.subplot(122)
     ax.scatter(pcs['PC1'], pcs['PC2'], c=colors)
-    x_label = 'PC1(%s%%)' % round((explained_variance_ratio[0]*100.0),2)  
-    y_label = 'PC2(%s%%)' % round((explained_variance_ratio[1]*100.0),2)   
-    ax.set_xlabel(x_label)    
-    ax.set_ylabel(y_label)    
+    x_label = 'PC1(%s%%)' % round((explained_variance_ratio[0]*100.0),2)   #x轴标签字符串
+    y_label = 'PC2(%s%%)' % round((explained_variance_ratio[1]*100.0),2)   #y轴标签字符串
+    ax.set_xlabel(x_label)    #绘制x轴标签
+    ax.set_ylabel(y_label)    #绘制y轴标签
     ax.set_title("PCA plot of top 2 PCs")
 
     handles = [pt.Patch(color=plt.cm.tab10(i), label=c) for i, c in enumerate(categories)]
@@ -122,34 +119,34 @@ def heat(A):
         print("ERROR: The dimension of A is not equal to the number of individual with genotyped")
         return
     fig = plt.figure()
- 
+    # 定义画布为1*1个划分，并在第1个位置上进行作图
     myfig = plt.gcf()
     ax = fig.add_subplot(111)
-   
+    # 定义横纵坐标的刻度
     ax.set_yticks(range(len(A[1])))
     ax.set_yticklabels(A[1])
     ax.set_xticks(range(len(A[1])))
     ax.set_xticklabels(A[1])
-   
+    # 作图并选择热图的颜色填充风格，这里选择hot
     im = ax.imshow(A[0], cmap=plt.cm.summer)
-  
+    # 增加右侧的颜色刻度条
     plt.colorbar(im)
-  
+    # 增加标题
     plt.title("Heatmap of relationship matrix")
 
     return myfig
-def gragh(data_ord,color_sire="blue",color_dam="red",fillcolor_sire="lightblue",fillcolor_dam="pink"):
+def gragh(data_ord):
     '''Plot family tree in three generations of a individual.
 
     data_ord: the pedigree of one individual in three generations.
     '''
     data_ord = sortPed(data_ord)
-
+    ###如果长度超过15
     if data_ord.shape[0]>15:
         print("Error: Please provide an individual's three-generation pedigree, which should not exceed 15 records at most")
         print("You can selectPed function first to select ped")
         return
-
+    ##先找到目标个体
     plotid = data_ord[~data_ord.iloc[:,0].isin(pd.concat([data_ord.iloc[:,1],(data_ord.iloc[:,2])]).to_list())]
     if plotid.shape[0] != 1:
         print("Error: Please provide one individual's three-generation pedigree, which should not exceed 15 records at most")
@@ -188,29 +185,28 @@ def gragh(data_ord,color_sire="blue",color_dam="red",fillcolor_sire="lightblue",
         else:
             id_11 = data_ord[data_ord.iloc[:,0] == id_13].iloc[0,1]
             id_12 = data_ord[data_ord.iloc[:,0] == id_13].iloc[0,2]
-    a ='''digraph G {{
+    a ='''digraph G {
   edge [dir=none];
   node [shape=box];
   graph [splines=ortho];
  
-  1     [shape=box, label="{0}",regular=0, color="{15}", style="filled" fillcolor="{17}"] ;
-  2     [shape=oval,label="{1}", regular=0, color="{16}", style="filled" fillcolor="{18}"] ;
-  3     [group =g1,label="{2}",shape=box, regular=0, color="{15}", style="filled" fillcolor="{17}"] ;
-  4    [shape=box, label="{3}",regular=0, color="{15}", style="filled" fillcolor="{17}"] ;
-  5   [shape=oval, label="{4}",regular=0, color="{16}", style="filled" fillcolor="{18}"] ;
-  6   [group =g2,label="{5}",shape=oval, regular=0, color="{16}", style="filled" fillcolor="{18}"] ;
-  7      [group =g3,label="{6}",shape=box, regular=0, color="{15}", style="filled" fillcolor="{17}"] ;
-  8     [shape=box, label="{7}",regular=0, color="{15}", style="filled" fillcolor="{17}"] ;
-  9     [shape=oval, label="{8}",regular=0, color="{16}", style="filled" fillcolor="{18}"] ;
-  10      [group =b1,label="{9}",shape=box, regular=0, color="{15}", style="filled" fillcolor="{17}"] ;
-  11     [shape=box,label="{10}", regular=0, color="{15}", style="filled" fillcolor="{17}"] ;
-  12    [shape=oval,label="{11}", regular=0, color="{16}", style="filled" fillcolor="{18}"] ;
-  13     [group =b2,label="{12}",shape=oval, regular=0, color="{16}", style="filled" fillcolor="{18}"] ;
-  14    [group =b3,label="{13}",shape=oval, regular=0, color="{16}", style="filled" fillcolor="{18}"] ;
-  15   [group =c1,label="{14}",shape=box, regular=0, color="{15}", style="filled" fillcolor="{17}"] ;
+  1     [shape=box, label="%s",regular=0, color="blue", style="filled" fillcolor="lightblue"] ;
+  2     [shape=oval,label="%s", regular=0, color="red", style="filled" fillcolor="pink"] ;
+  3     [group =g1,label="%s",shape=box, regular=0, color="blue", style="filled" fillcolor="lightblue"] ;
+  4    [shape=box, label="%s",regular=0, color="blue", style="filled" fillcolor="lightblue"] ;
+  5   [shape=oval, label="%s",regular=0, color="red", style="filled" fillcolor="pink"] ;
+  6   [group =g2,label="%s",shape=oval, regular=0, color="red", style="filled" fillcolor="pink"] ;
+  7      [group =g3,label="%s",shape=box, regular=0, color="blue", style="filled" fillcolor="lightblue"] ;
+  8     [shape=box, label="%s",regular=0, color="blue", style="filled" fillcolor="lightblue"] ;
+  9     [shape=oval, label="%s",regular=0, color="red", style="filled" fillcolor="pink"] ;
+  10      [group =b1,label="%s",shape=box, regular=0, color="blue", style="filled" fillcolor="lightblue"] ;
+  11     [shape=box,label="%s", regular=0, color="blue", style="filled" fillcolor="lightblue"] ;
+  12    [shape=oval,label="%s", regular=0, color="red", style="filled" fillcolor="pink"] ;
+  13     [group =b2,label="%s",shape=oval, regular=0, color="red", style="filled" fillcolor="pink"] ;
+  14    [group =b3,label="%s",shape=oval, regular=0, color="red", style="filled" fillcolor="pink"] ;
+  15   [group =c1,label="%s",shape=box, regular=0, color="blue", style="filled" fillcolor="lightblue"] ;
 
 
-  '''.format(id_1,id_2,id_3,id_4,id_5,id_6,id_7,id_8,id_9,id_10,id_11,id_12,id_13,id_14,id_15,color_sire,color_dam,fillcolor_sire,fillcolor_dam)+'''
   a1 [shape=diamond,label="",height=0.25,width=0.25,group =g1];
   {rank=same; 1 -> a1 -> 2};
   a1 -> 3
@@ -253,5 +249,6 @@ def gragh(data_ord,color_sire="blue",color_dam="red",fillcolor_sire="lightblue",
   rankdir = LR;
   }
 
-}'''
+}
+  ''' %(id_1,id_2,id_3,id_4,id_5,id_6,id_7,id_8,id_9,id_10,id_11,id_12,id_13,id_14,id_15)
     return a
